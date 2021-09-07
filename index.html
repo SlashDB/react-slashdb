@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>react-slashdb</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,9 +17,114 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">react-slashdb</h1>
 
-    
+<p><a href="https://www.slashdb.com/">SlashDB</a>, <a href="https://www.slashdb.com/documentation/">SlashDB documentation</a>, <a href="https://github.com/SlashDB/taskapp-demo">demo task list app</a>, <a href="https://slashdb.github.io/react-slashdb/">react-slashdb documentation</a></p>
+<hr />
+<p>React-slashdb is a SlashSD SDK for use in ReactJS and vanilla JS project. It allows easy integration of SlashDB as middleware solution for interaction with relational databases. Methods exposed allow for connection to database by providing minimal vital information and provides build in capability for state management of incoming data when using the ReactJS geared part of the package.</p>
+<p>Visit <a href="https://www.slashdb.com/">SlashDB</a> and <a href="https://docs.slashdb.com/user-guide/">SlashDB user guide</a> to learn more about SlashDB.</p>
+<h2 id="documentation">Documentation</h2>
+<p>Please visit <a href="https://www.slashdb.com/documentation/">SlashDB documentation</a> to learn about all methods and functions avaliable in react-slashdb. There you can find a full and descriptive information about all exposed functions and methods in the SDK.</p>
+<h2 id="quick-start-guide">Quick Start Guide</h2>
+<h3 id="set-up-and-install">Set up and install</h3>
+<p>To start using react-slashdb you will first need to have Node.js set up on your system. Please get the LTS version of Node.js from here <a href="https://nodejs.org/en/">Node.js</a>.</p>
+<p>This package has a peerDependency of react and react-dom so it is assumed you have those on your system as well. Please see <a href="https://www.npmjs.com/package/react-dom">react-dom</a> and <a href="https://www.npmjs.com/package/react">react</a>. While it is true there are functions and metrhods in this SDK which only focus on vanilla JS use if you want to get the full functionality you will need to have react and react-dom. Generaly the SDK is split in two parts ReactJS geared functionality and vanilla JS geared functionality.</p>
+<p>To get started either install the package globaly using the following npm command in a terminal</p>
+<pre><code>npm install - g react-slashdb</code></pre>
+<p>or navigate in your file system to a project in which you wish to use the package and run the following command in terminal</p>
+<pre><code>npm install react-slashdb</code></pre>
+<p>Now that you havew the package installed you can use an import stament to tap in the fuctionality of react-slashdb as such</p>
+<pre><code>import { SlashDBProvider } from &#39;react-slashdb&#39;;</code></pre>
+<p>SlashDBProvider is only one of the many functions, methods or components avaliable from this SDK. To learn about all of them visit <a href="https://slashdb.github.io/react-slashdb/">react-slashdb documentation</a>.</p>
+<h3 id="use-in-a-reactjs-project">Use in a ReactJS project</h3>
+<h4 id="slashdbprovider-and-slashdbcontext">SlashDBProvider and SlashDBContext</h4>
+<p>To set up connection to a SlashDB server and optionaly pass an API key first we need to call the component <strong>SlashDBProvider</strong> and pass some set up options as values. See this example for clarification. <strong>BaseUrl</strong> and <strong>dataFormatExt</strong> will always be needed to successfully connect to SlashDB server. If server allows cors or database being accessed doesn't require authentication API key is not needed. If server doesn't allow cors and authentication is neede API key should be provided. To complete authentication set up see <strong>auth.login</strong> below.</p>
+<pre><code>import { SlashDBProvider } from &#39;./Context&#39;;
+.
+.
+.
+&lt;SlashDBProvider
+    baseUrl={&#39;https://demo.slashdb.com/&#39;}
+    setUpOptions={{
+    dataFormatExt: &#39;json&#39;,
+    apiKey: &#39;API key value&#39;,
+}}
+&gt;
+  &lt;App /&gt;
+&lt;/SlashDBProvider&gt;</code></pre>
+<p>It is recomented to wrap the root component of your ReactJS app (in this case it is <App />) with the <strong>SlashDBProvider</strong> so that the passed values are avaliable for use down the component tree by calling the following code:</p>
+<pre><code>import { useContext } from &#39;react&#39;;
+import { SlashDBContext } from &#39;./Context&#39;;
+.
+.
+.
+const { baseUrl, setUpOptions } = useContext(SlashDBContext);</code></pre>
+<p>By using the ReactJS hook <strong>useContext</strong> and passing the value of <strong>SlashDBContext</strong> we can set the value of { baseUrl, setUpOptions } to the values passed in the <strong>SlashDBProvider</strong> and use them as we need.</p>
+<h4 id="usesetup">useSetUp()</h4>
+<p>All this will do is set internal variables based on the values provide in <strong>SlashDBProvider</strong> for connection to SlashDB server. While build in hooks <strong>useDataDiscovery</strong> and <strong>useExecuteQuery</strong> do so internaly already it is good practive to call it at a top level of project to ensure other fuctionality such as <strong>auth.login</strong> works properly. See code example below.</p>
+<pre><code>import { useSetUp } from &#39;react-slashdb&#39;;
+.
+.
+.
+useSetUp();</code></pre>
+<h4 id="auth">auth</h4>
+<p>Auth is a class export of the SDK which allows for authentication with username and password for login purposes to take place. It also allow for logout to happen. We import the class as such:</p>
+<pre><code>import { auth } from &#39;react-slashdb&#39;;</code></pre>
+<h5 id="auth.loginusername-password-auth.isauthenticated-and-auth.logout">auth.login(username, password, () =&gt; {}), auth.isAuthenticated() and auth.logout(() =&gt; {})</h5>
+<p>This method takes 3 params username, password and some function to run upon successful authentication. If using API key for authentication purposes the value of password will not change the authentication result but still needs to have some value passed. If only using username and password for authentication the password needs to match the one for the user in the SlashDB config files. Username needs to match regardless if using API key or not.</p>
+<pre><code>auth.login(username, password, () =&gt; {
+  //your code to run if authentication returns success
+});</code></pre>
+<p>One way to use this would be to replace <em>//your code to run if authentication returns success</em> with something like props.history.push('/app'); and also have a protected route at <em>/app</em>. In your ProtectedRoute.js(example name can be anything you wish) component to again use the <strong>auth</strong> by calling <strong>auth.isAuthenticated()</strong> to check if authentication has taken place and if it was been successful. Here is a full example. Note this example also uses <a href="https://www.npmjs.com/package/react-router-dom">react-router-dom</a> for routing needs.</p>
+<p>App.js</p>
+<pre><code>...
+&lt;ProtectedRoute exact path=&quot;/app&quot; component={_YourComponent_} /&gt;
+...</code></pre>
+<p>Login.js</p>
+<pre><code>...
+auth.login(&#39;_username_&#39;, &#39;_password_&#39;, () =&gt; {
+  props.history.push(&#39;/app&#39;);
+});</code></pre>
+<p>ProtectedRoute.js</p>
+<pre><code>...
+(auth.isAuthenticated()) === false)
+...</code></pre>
+<p>Do not forget to actually import the auth module from react-slashdb. For a full code example please see the files App.js, Login.js and ProtectedRoute.js in <a href="https://github.com/SlashDB/taskapp-demo">demo task list app</a>.</p>
+<p>To log user out use the following:</p>
+<pre><code>auth.logout(() =&gt; {
+        //your code here;
+}</code></pre>
+<p>This will send a logout request to the SlashDB server if request is successful the passed function will run. Here is a example way to use it. Replace the <em>//your code here</em> part with something like props.history.push('/'). Again for a full example in a fuctioning application refer to <a href="https://github.com/SlashDB/taskapp-demo">demo task list app</a>.</p>
+<h3 id="hooks-for-database-interaction-and-data-retrival">hooks for database interaction and data retrival</h3>
+<p>Please see <a href="https://github.com/SlashDB/taskapp-demo#using-hooks-to-interact-with-database-via-slashdb-api">Using hooks to interact with database via Slashdb API</a> and <a href="https://github.com/SlashDB/taskapp-demo#what-are-usedatadiscovery-and-useexecutequery-hooks">What are useDataDiscovery and useExecuteQuery hooks?</a></p>
+<p>The SDK exposes two custom hooks which make retriving data and interacting with a database on a SlashDB server via GET, POST, PUT and DELETE HTTP request easy and simple. The first one is <strong>useDataDiscovery()</strong>.</p>
+<h4 id="usedatadiscovery">useDataDiscovery()</h4>
+<p>Please see <a href="https://github.com/SlashDB/taskapp-demo#usedatadiscovery">useDataDiscovery() in-depth</a></p>
+<p><strong>useDataDiscovery()</strong> makes the SlashDB functionality of Data Discovery for interaction with database readily valiable in ReactJS project. Here is an example:</p>
+<pre><code>import { useDataDiscovery } from &#39;react-slashdb&#39;;
+...
+const [data, getData, postData, putData, deleteData] = useDataDiscovery(
+  &#39;_DatabaseName_&#39;,
+  [&#39;_TableName_&#39;]
+);</code></pre>
+<p><strong>UseDataDiscovery()</strong> will return a param that holds the retrived data after performing a GET request to the specified resource and four functions wich can be used to perform GET, POST, PUT and DELETE request for interaction with the provided database. The params provided in <strong>SlashDBProvider</strong> and the params provided in <strong>useDataDiscovery</strong> are what is used to construct the url to which the request will be made. For detailed example, explanation and sample use please refer to <a href="https://github.com/SlashDB/taskapp-demo">demo task list app</a>.</p>
+<h4 id="useexecutequery">useExecuteQuery()</h4>
+<p>Please see <a href="https://github.com/SlashDB/taskapp-demo#useexecutequery">useExecuteQuery() in-depth</a></p>
+<p><strong>useExecuteQuery()</strong> allows for query existing on SlashDB server to be executed.</p>
+<pre><code>const [queryData, executeMyQuery] = useExecuteQuery(&#39;_HTTP_Method_&#39;, &#39;_queryName_&#39;, {
+  _param_: `_paramValue_`,
+});
+.
+.
+.
+executeMyQuery(&#39;_HTTP_Method_&#39;, &#39;_queryName_&#39;, {
+  _param_: `_paramValue_`,
+});
+.
+.
+.
+&lt;p&gt;This is the value returned by the query {queryData[0].NameOfKey} %&lt;/p&gt;</code></pre>
+
 
 
 
@@ -56,7 +161,7 @@
 <br class="clear">
 
 <footer>
-    Documentation was generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Sep 05 2021 19:13:19 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Sep 05 2021 19:13:19 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
