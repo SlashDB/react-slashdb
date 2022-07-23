@@ -10,7 +10,7 @@ Visit [SlashDB](https://www.slashdb.com/) and [SlashDB user guide](https://docs.
 
 ## Documentation
 
-Please visit [SlashDB documentation](https://www.slashdb.com/documentation/) to learn about all methods and functions avaliable in react-slashdb. There you can find a full and descriptive information about all exposed functions and methods in the SDK. 
+Please visit [SlashDB documentation](https://www.slashdb.com/documentation/) to learn about all methods and functions available in react-slashdb. There you can find a full and descriptive information about all exposed functions and methods in the SDK. 
 
 ## Quick Start Guide 
 
