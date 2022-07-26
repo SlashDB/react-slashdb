@@ -86,7 +86,7 @@ Auth is a class export of the SDK which allows for authentication with a usernam
 It provides three methods: ```login```, ```isAuthenticated```, ```logout```   
 
 ##### auth.login(username, password, fnc) 
-This method takes 3 parameters: ```username```, ```password``` and a function ```fnc``` that runs on successful authentication. When using an API key for authentication purposes, the value of ```password``` will not affect the authentication process, but a placeholder value must be provided. When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
+This method takes 3 parameters: ```username```, ```password``` and a function ```fnc``` that runs on successful authentication. When using an API key for authentication purposes, the value of ```password``` will not affect the authentication process; just pass a value of null as a placeholder. When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
 
      auth.login(username, password, () => {
         // code to run if authentication is successful
@@ -180,7 +180,7 @@ It returns an array that holds the requested data from the database, as well as 
 The functions ```postData```, ```putData ``` and ```deleteData``` also refresh the value of ```data``` to reflect the current database state after their operations complete.   This allows state management of the database to be abstracted, removing the need to track the state of ```data``` using any ReactJS hooks like ```useEffects```.
 
 ### useExecuteQuery(httpMethod, queryName, queryParams)
-```useExecuteQuery``` enables the use of the SQL Pass-Thru features of SlashDB.  Queries are created ahead of time in the SlashDB administrative control panel (Configure->Queries); this hook gives the developer the ability to execute those queries using the ReactJS SlashDB SDK [see SlashDB documentation for more on SQL Pass-Thru](https://docs.slashdb.com/user-guide/config/queries/).
+```useExecuteQuery``` enables the use of the SQL Pass-Thru features of SlashDB.  Queries are created ahead of time in the SlashDB administrative control panel (Configure->Queries); this hook gives the developer the ability to execute those queries using the SlashDB ReactJS SDK [see SlashDB documentation for more on SQL Pass-Thru](https://docs.slashdb.com/user-guide/config/queries/).
 
 This hook takes three parameters: a string which specifies what HTTP method type to use (e.g. GET, POST, etc), a string representing the query name as defined in the SlashDB Queries configuration, and an object containing key:value pairs of parameters to pass to the query. It returns the query data as an array of objects, and a function reference that allows you to execute the query as desired, with the same or different parameters.
 
