@@ -1,8 +1,8 @@
-import slashDB  from './slashdb';
+//import slashDB  from './slashdb';
 
 class Auth {
   constructor() {
-    this.authenticated = slashDB.getIsAuthenticated();
+    //this.authenticated = slashDB.getIsAuthenticated();
   }
 
   /**
@@ -13,13 +13,24 @@ class Auth {
    * @param {String} password Password credential.
    * @param {function} fnc Function to be executed after valiadation of session.
    */
-  async login(username, password, fnc) {
-    await slashDB
-      .authenticateCookieSessionLogin(username, password)
-      .then(() => {
-        this.authenticated = slashDB.getIsAuthenticated();
-      })
-      .then(fnc);
+  async login(sdbClient, fnc) {
+    // await slashDB
+    //   .authenticateCookieSessionLogin(username, password)
+    //   .then(() => {
+    //     this.authenticated = slashDB.getIsAuthenticated();
+    //   })
+    try {
+      await sdbClient.login()
+        .then( () => {
+          if (sdbClient.isAuthenticatedFlag) {
+            fnc();
+          }
+        });
+    }
+    catch(e) {
+      console.error(e);
+      return;
+    }
   }
 
   /**
@@ -28,12 +39,13 @@ class Auth {
    * @param {function} fnc to be executed after logout. Eg. push route away from restricted area of application.
    */
   async logout(fnc) {
-    await slashDB
-      .authenticateCookieSessionLogout()
-      .then(() => {
-        this.authenticated = slashDB.getIsAuthenticated();
-      })
-      .then(fnc);
+    return;
+    // await slashDB
+    //   .authenticateCookieSessionLogout()
+    //   .then(() => {
+    //     this.authenticated = slashDB.getIsAuthenticated();
+    //   })
+    //   .then(fnc);
   }
 
   /**
@@ -42,9 +54,10 @@ class Auth {
    * @return {boolean} True or false value based on if user is still validly authenticated.
    */
   async isAuthenticated() {
-    var state;
-    state = await slashDB.isAuthenticated();
-    return state;
+    return;
+    // var state;
+    // state = await slashDB.isAuthenticated();
+    // return state;
   }
 }
 
