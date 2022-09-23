@@ -4,19 +4,38 @@
 //Import React built-in hooks to use under the hood.
 import { useState, useEffect, useContext, useRef } from 'react';
 //Import vanilla JS class from SDK.
-import { default as slashDB } from './slashdb';
+//import { default as slashDB } from './slashdb';
 //Import custom context for use of param passing thoughout project.
 import { SlashDBContext } from './Context';
+import { SlashDBClient } from '@slashdb/js-sdk/slashdbclient.js';
 
+import { DataDiscoveryResource } from "@slashdb/js-sdk/datadiscovery.js";
+import { SQLPassThruQuery } from "@slashdb/js-sdk/sqlpassthru.js";
+
+// list of clients for use by hooks
+const sdbClientList = {}
 /**
  * Take values for baseUrl and setUpOptions passed to SlashDBContext via evoking.
  * SlashDBProvider at top level of user/client project and call method setUp passing
  * those params.
  */
-const useSetUp = () => {
-  const { baseUrl, setUpOptions } = useContext(SlashDBContext);
-  slashDB.setUp(baseUrl, setUpOptions);
+const useSetUp = (client = 'default', host = undefined, username = undefined, apiKey = undefined) => {
+  
+  if (client === 'default') {
+    if (!sdbClientList.hasOwnProperty('default')) {
+      const { baseUrl, setUpOptions } = useContext(SlashDBContext);
+      sdbClientList['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey);
+    }
+  }
+  else {
+    if (!sdbClientList.hasOwnProperty(client)) {
+      sdbClientList[client] = new SlashDBClient(host, username, apiKey);
+    }
+  }
+  //const client = slashDB.setUp(baseUrl, setUpOptions);
+  return sdbClientList[client];
 };
+
 
 /**
  * Hook for use of datadiscovery feature of SlashDB.
@@ -30,11 +49,12 @@ const useSetUp = () => {
  */
 const useDataDiscovery = (
   database,
-  defaultFilterParameters,
-  queryStrParameters
+  resource,
+  defaultFilter = '',
+  client = 'default'
 ) => {
   //Redundant call - in case user did not call useSetUp at top level of project
-  useSetUp();
+  const sdbClient = sdbClientList[client];
 
   const isMountedRef = useRef(null);
 
@@ -49,6 +69,9 @@ const useDataDiscovery = (
     setDidUpdate(new Date().getTime());
   };
 
+  const dbResource = new DataDiscoveryResource(database, resource, sdbClient);
+ 
+  
   //filterParam rename
   /**
    *
@@ -57,20 +80,22 @@ const useDataDiscovery = (
    * @param {Object} queryStrParameters Query params in key value pairs format to be sent via url e.g. {limit: 29} => ?limit=29
    * @param {Object} headers Any headers user may wish to pass.
    */
-  const _get = async (filterParameters, queryStrParameters, headers) => {
-    await slashDB
-      .dataDiscovery(
-        'get',
-        database,
-        filterParameters ? filterParameters : defaultFilterParameters,
-        queryStrParameters,
-        undefined,
-        headers
-      )
-      .then((data) => handleSetData(data))
-      .catch((error) => {
-        console.log(error);
-      });
+  const _get = async (filter, headers) => {
+    filter = filter ? filter : defaultFilter;
+    
+    if (headers) {
+      dbResource.setExtraHeaders(headers);
+    }
+
+    try {
+      const r = await dbResource.get(filter);
+      handleSetData(r.data);
+      dbResource.extraHeaders = {};
+    }
+    catch(e) {
+      dbResource.extraHeaders = {};
+      console.error(e);
+    }
   };
 
   /**
@@ -81,17 +106,22 @@ const useDataDiscovery = (
    * @param {Object} queryStrParameters Query params in key value pairs format to be send via url eg. {limit: 29} => ?limit=29
    * @param {Object} headers Any headers user may wish to pass.
    */
-  const _post = async (filterParameters, body, queryStrParameters, headers) => {
-    await slashDB
-      .dataDiscovery(
-        'post',
-        database,
-        filterParameters ? filterParameters : defaultFilterParameters,
-        queryStrParameters,
-        body,
-        headers
-      )
-      .then(handleUpdate);
+  const _post = async (body, filter, headers) => {
+    filter = filter ? filter : defaultFilter;
+
+    if (headers) {
+      dbResource.setExtraHeaders(headers);
+    }
+
+    try {
+      await dbResource.post(body, filter)
+        .then(handleUpdate);
+      dbResource.extraHeaders = {};
+    }
+    catch(e) {
+      dbResource.extraHeaders = {};
+      console.error(e);
+    }
   };
 
   /**
@@ -102,18 +132,23 @@ const useDataDiscovery = (
    * @param {Object} queryStrParameters Query params in key value pairs format to be send via url e.g. {limit: 29} => ?limit=29
    * @param {Object} headers Any headers user may wish to pass.
    */
-  const _put = async (filterParameters, body, queryStrParameters, headers) => {
-    await slashDB
-      .dataDiscovery(
-        'put',
-        database,
-        filterParameters ? filterParameters : defaultFilterParameters,
-        queryStrParameters,
-        body,
-        headers
-      )
-      .then(handleUpdate);
-  };
+    const _put = async (filter, body, headers) => {
+      filter = filter ? filter : defaultFilter;
+
+      if (headers) {
+        dbResource.setExtraHeaders(headers);
+      }
+
+      try {
+        await dbResource.put(filter, body)
+          .then(handleUpdate);
+        dbResource.extraHeaders = {};
+      }
+      catch(e) {
+        dbResource.extraHeaders = {};
+        console.error(e);
+      }
+    }
 
   /**
    *
@@ -122,23 +157,35 @@ const useDataDiscovery = (
    * @param {Object} queryStrParameters Query params in key value pairs format to be send via url e.g. {limit: 29} => ?limit=29
    * @param {*} headers Any headers user may wish to pass.
    */
-  const _delete = async (filterParameters, queryStrParameters, headers) => {
-    await slashDB
-      .dataDiscovery(
-        'delete',
-        database,
-        filterParameters ? filterParameters : defaultFilterParameters,
-        queryStrParameters,
-        undefined,
-        headers
-      )
-      .then(handleUpdate);
+  const _delete = async (filter, headers) => {
+    filter = filter ? filter : defaultFilter;
+
+    if (headers) {
+      dbResource.setExtraHeaders(headers);
+    }
+
+    try {
+      await dbResource.delete(filter)
+        .then(handleUpdate);
+      dbResource.extraHeaders = {};
+    }
+    catch(e) {
+      dbResource.extraHeaders = {};
+      console.error(e);
+    }
   };
 
-  useEffect(() => {
+
+  useEffect( async () => {
     isMountedRef.current = true;
     if (isMountedRef.current) {
-      _get(defaultFilterParameters, queryStrParameters);
+      try {
+        const r = await dbResource.get(defaultFilter);
+        handleSetData(r.data);
+      }
+      catch(e) {
+        console.error(e);
+      }
     }
     return () => (isMountedRef.current = false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,6 +193,7 @@ const useDataDiscovery = (
 
   return [data, _get, _post, _put, _delete];
 };
+
 
 /**
  * Function for executing query from slashDB server on a database
@@ -159,13 +207,14 @@ const useDataDiscovery = (
  * query execution
  */
 const useExecuteQuery = (
-  defHttpMethod,
-  queryID,
-  defParameters,
-  defQueryStrParameters
+  queryName,
+  defaultParams,
+  defHttpMethod = 'get',
+  client = 'default'
 ) => {
   //redundant call - in case user did not call useSetUp at top level of project
-  useSetUp();
+  const sdbClient = sdbClientList[client];
+  const sqlQuery = new SQLPassThruQuery(queryName, sdbClient);
 
   const isMountedRef = useRef(null);
 
@@ -184,28 +233,42 @@ const useExecuteQuery = (
    * @param {Object} headers Any headers user may wish to pass.
    */
   const _executeQuery = async (
-    httpMethod,
-    parameters,
-    queryStrParameters,
-    headers
+    params,
+    body,
+    httpMethod = undefined,
+    headers = undefined
   ) => {
-    await slashDB
-      .executeQuery(
-        httpMethod ? httpMethod : defHttpMethod,
-        queryID,
-        parameters ? defParameters : parameters,
-        queryStrParameters ? defQueryStrParameters : queryStrParameters,
-        headers
-      )
-      .then((data) => {
-        handleDataSet(data);
-      });
+
+    params = params ? params : defaultParams;
+    httpMethod = httpMethod ? httpMethod : defHttpMethod;
+
+    if (headers) {
+      sqlQuery.setExtraHeaders(headers);
+    }
+
+    try {
+      const method = httpMethod.toLowerCase();
+      // post method has body as required arg in position 1, and parameter is optional
+      // so flip them around.  also, post method in SQL Pass Thru doesn't accept URL parameters and a body data
+      // so set the parameters arg to undefined
+      if (method === 'post') {
+        [params,body] = [body,params];
+        body = undefined;
+      }
+      const r = await sqlQuery[method](params, body);
+      handleDataSet(r.data);
+      sqlQuery.extraHeaders = {};
+    }
+    catch(e) {
+      sqlQuery.extraHeaders = {};
+      console.error(e);
+    }
   };
 
   useEffect(() => {
     isMountedRef.current = true;
     if (isMountedRef.current) {
-      _executeQuery(defHttpMethod, defParameters);
+      _executeQuery(defaultParams);
     }
     return () => (isMountedRef.current = false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
