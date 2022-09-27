@@ -19,17 +19,17 @@ const sdbClientList = {}
  * SlashDBProvider at top level of user/client project and call method setUp passing
  * those params.
  */
-const useSetUp = (client = 'default', host = undefined, username = undefined, apiKey = undefined) => {
+const useSetUp = (client = 'default', host = undefined, username = undefined, apiKey = undefined, password = undefined) => {
   
   if (client === 'default') {
     if (!sdbClientList.hasOwnProperty('default')) {
       const { baseUrl, setUpOptions } = useContext(SlashDBContext);
-      sdbClientList['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey);
+      sdbClientList['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey, setUpOptions.password);
     }
   }
   else {
     if (!sdbClientList.hasOwnProperty(client)) {
-      sdbClientList[client] = new SlashDBClient(host, username, apiKey);
+      sdbClientList[client] = new SlashDBClient(host, username, apiKey, password);
     }
   }
   //const client = slashDB.setUp(baseUrl, setUpOptions);
