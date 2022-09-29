@@ -2,7 +2,7 @@
 
 class Auth {
   constructor() {
-    //this.authenticated = slashDB.getIsAuthenticated();
+    this.authenticated = false;
   }
 
   /**
@@ -13,52 +13,40 @@ class Auth {
    * @param {String} password Password credential.
    * @param {function} fnc Function to be executed after valiadation of session.
    */
-  async login(sdbClient, fnc) {
-    // await slashDB
-    //   .authenticateCookieSessionLogin(username, password)
-    //   .then(() => {
-    //     this.authenticated = slashDB.getIsAuthenticated();
-    //   })
+  async login(username, password, sdbClient, fnc) {
+    sdbClient.username = username;
+    if (!sdbClient.apiKey) {
+      sdbClient.password = password;
+    }
+    else {
+      console.warn('API key set, ignoring password');
+    }
     try {
       await sdbClient.login()
         .then( () => {
           if (sdbClient.isAuthenticatedFlag) {
+            this.authenticated = true;
             fnc();
           }
         });
     }
     catch(e) {
+      this.authenticated = false;
       console.error(e);
       return;
     }
   }
 
   /**
-   * Send logout request and terminate cookie.
+   * Send logout request
    *
    * @param {function} fnc to be executed after logout. Eg. push route away from restricted area of application.
    */
   async logout(fnc) {
-    return;
-    // await slashDB
-    //   .authenticateCookieSessionLogout()
-    //   .then(() => {
-    //     this.authenticated = slashDB.getIsAuthenticated();
-    //   })
-    //   .then(fnc);
+    this.authenticated = false;
+    fnc();
   }
 
-  /**
-   * Check if user is authenticated still.
-   *
-   * @return {boolean} True or false value based on if user is still validly authenticated.
-   */
-  async isAuthenticated() {
-    return;
-    // var state;
-    // state = await slashDB.isAuthenticated();
-    // return state;
-  }
 }
 
 export default new Auth();
