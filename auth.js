@@ -3,6 +3,7 @@
 class Auth {
   constructor() {
     this.authenticated = false;
+    this.sdbClient = null;
   }
 
   /**
@@ -14,17 +15,18 @@ class Auth {
    * @param {function} fnc Function to be executed after valiadation of session.
    */
   async login(username, password, sdbClient, fnc) {
-    sdbClient.username = username;
+    this.sdbClient = sdbClient;
+    this.sdbClient.username = username;
     if (!sdbClient.apiKey) {
-      sdbClient.password = password;
+      this.sdbClient.password = password;
     }
     else {
       console.warn('API key set, ignoring password');
     }
     try {
-      await sdbClient.login()
+      await this.sdbClient.login()
         .then( () => {
-          if (sdbClient.isAuthenticatedFlag) {
+          if (this.sdbClient.isAuthenticatedFlag) {
             this.authenticated = true;
             fnc();
           }
@@ -43,6 +45,7 @@ class Auth {
    * @param {function} fnc to be executed after logout. Eg. push route away from restricted area of application.
    */
   async logout(fnc) {
+    this.sdbClient.logout();
     this.authenticated = false;
     fnc();
   }
