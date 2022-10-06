@@ -1,39 +1,41 @@
 /**
  * Custom React hook for ease of state management with use of SlashDB and SDK.
  */
-//Import React built-in hooks to use under the hood.
+// import React built-in hooks to use under the hood.
 import { useState, useEffect, useContext, useRef } from 'react';
-//Import vanilla JS class from SDK.
-//import { default as slashDB } from './slashdb';
-//Import custom context for use of param passing thoughout project.
-import { SlashDBContext } from './Context';
-import { SlashDBClient } from '@slashdb/js-sdk/slashdbclient.js';
 
+
+
+// import custom context for retrieving primary SlashDB instance config
+import { SlashDBContext } from './Context';
+
+// required Vanilla SDK classes
+import { SlashDBClient } from '@slashdb/js-sdk/slashdbclient.js';
 import { DataDiscoveryResource } from "@slashdb/js-sdk/datadiscovery.js";
 import { SQLPassThruQuery } from "@slashdb/js-sdk/sqlpassthru.js";
 
-// list of clients for use by hooks
+// list of SlashDB clients for use by hooks
 const sdbClientList = {}
 /**
  * Take values for baseUrl and setUpOptions passed to SlashDBContext via evoking.
  * SlashDBProvider at top level of user/client project and call method setUp passing
  * those params.
  */
-const useSetUp = (client = 'default', host = undefined, username = undefined, apiKey = undefined, password = undefined) => {
+const useSetUp = (instanceName = 'default', host = undefined, username = undefined, apiKey = undefined, password = undefined) => {
   
-  if (client === 'default') {
+  if (instanceName === 'default') {
     if (!sdbClientList.hasOwnProperty('default')) {
       const { baseUrl, setUpOptions } = useContext(SlashDBContext);
       sdbClientList['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey, setUpOptions.password);
     }
   }
   else {
-    if (!sdbClientList.hasOwnProperty(client)) {
-      sdbClientList[client] = new SlashDBClient(host, username, apiKey, password);
+    if (!sdbClientList.hasOwnProperty(instanceName)) {
+      sdbClientList[instanceName] = new SlashDBClient(host, username, apiKey, password);
     }
   }
-  //const client = slashDB.setUp(baseUrl, setUpOptions);
-  return sdbClientList[client];
+  
+  return sdbClientList[instanceName];
 };
 
 
@@ -51,10 +53,10 @@ const useDataDiscovery = (
   database,
   resource,
   defaultFilter = '',
-  client = 'default'
+  instanceName = 'default'
 ) => {
-  //Redundant call - in case user did not call useSetUp at top level of project
-  const sdbClient = sdbClientList[client];
+  
+  const sdbClient = sdbClientList[instanceName];
 
   const isMountedRef = useRef(null);
 
@@ -210,10 +212,10 @@ const useExecuteQuery = (
   queryName,
   defaultParams,
   defHttpMethod = 'get',
-  client = 'default'
+  instanceName = 'default'
 ) => {
   //redundant call - in case user did not call useSetUp at top level of project
-  const sdbClient = sdbClientList[client];
+  const sdbClient = sdbClientList[instanceName];
   const sqlQuery = new SQLPassThruQuery(queryName, sdbClient);
 
   const isMountedRef = useRef(null);
