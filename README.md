@@ -4,13 +4,13 @@
 [SlashDB](https://www.slashdb.com/), [SlashDB documentation](https://www.slashdb.com/documentation/), [demo task list app](https://github.com/SlashDB/taskapp-demo), [react-slashdb documentation](https://slashdb.github.io/react-slashdb/)
 ---
 
-React-slashdb is an SDK for use in ReactJS and vanilla Javascript projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the ReactJS-geared part of the package.
+react-slashdb is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the ReactJS-geared part of the package.
 
 Visit [SlashDB](https://www.slashdb.com/) and [SlashDB user guide](https://docs.slashdb.com/user-guide/) to learn more about SlashDB.
 
 ## Documentation
 
-Please visit [SlashDB documentation](https://www.slashdb.com/documentation/) to learn about all methods and functions available in react-slashdb. There you can find a full and descriptive information about all exposed functions and methods in the SDK. 
+Check out the [SlashDB documentation](https://www.slashdb.com/documentation/) to learn about all the methods and functions used in SlashDB that are exposed by this SDK. 
 
 ## Quick Start Guide 
 
@@ -18,19 +18,19 @@ Please visit [SlashDB documentation](https://www.slashdb.com/documentation/) to 
 
 To start using react-slashdb you need to have Node.js set up on your system. Please get the LTS version of Node.js here [Node.js](https://nodejs.org/en/).
 
-This package has a peer dependency of react and react-dom so these packages will be installed on your system as well if required. Please see [react-dom](https://www.npmjs.com/package/react-dom) and [react](https://www.npmjs.com/package/react). The SDK is split in two parts; ReactJS geared functionality and vanilla JS geared functionality, which does not require ReactJS to function.
+This package has a peer dependency of react and react-dom so these packages will be installed on your system as well if required. Please see [react-dom](https://www.npmjs.com/package/react-dom) and [react](https://www.npmjs.com/package/react). The SDK also requires the [SlashDB Vanilla JS SDK](https://github.com/SlashDB/slashdb-js), which is also included as a dependency.
 
 To get started, either install the package globally using the following npm command in a terminal:
 
-    npm install -g react-slashdb
+    npm install -g @slashdb/react-slashdb
 
 or navigate in your file system to an existing project in which you wish to use the package and run the following command in a terminal:
 
-    npm install react-slashdb
+    npm install @slashdb/react-slashdb
 
 Once the package is installed, you can use an import stament to tap into the functionality of react-slashdb, e.g. :
 
-    import { SlashDBProvider } from 'react-slashdb';
+    import { SlashDBProvider } from '@slashdb/react-slashdb';
 
 ```SlashDBProvider``` is only one of the many functions, methods or components available from this SDK. More of them are described later in this document.
 
