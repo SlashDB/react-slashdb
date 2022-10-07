@@ -1,5 +1,3 @@
-//import slashDB  from './slashdb';
-
 class Auth {
   constructor() {
     this.authenticated = false;

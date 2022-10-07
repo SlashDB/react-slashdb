@@ -10,9 +10,9 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { SlashDBContext } from './Context';
 
 // required Vanilla SDK classes
-import { SlashDBClient } from '@slashdb/js-sdk/slashdbclient.js';
-import { DataDiscoveryResource } from "@slashdb/js-sdk/datadiscovery.js";
-import { SQLPassThruQuery } from "@slashdb/js-sdk/sqlpassthru.js";
+import { SlashDBClient } from '@slashdb/js-sdk/modules/slashdbclient.js';
+import { DataDiscoveryResource } from "@slashdb/js-sdk/modules/datadiscovery.js";
+import { SQLPassThruQuery } from "@slashdb/js-sdk/modules/sqlpassthru.js";
 
 // list of SlashDB clients for use by hooks
 const sdbClientList = {}
