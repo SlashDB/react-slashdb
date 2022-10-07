@@ -178,12 +178,17 @@ const useDataDiscovery = (
   };
 
 
-  useEffect( async () => {
+  useEffect( () => {
     isMountedRef.current = true;
     if (isMountedRef.current) {
-      try {
+      
+      async function getData() {
         const r = await dbResource.get(defaultFilter);
         handleSetData(r.data);
+      };
+
+      try {
+        getData();
       }
       catch(e) {
         console.error(e);
