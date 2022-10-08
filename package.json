@@ -22,11 +22,9 @@
     "url": "https://github.com/SlashDB/react-slashdb/issues"
   },
   "homepage": "https://github.com/SlashDB/react-slashdb#readme",
-  "dependencies": {
-    "@slashdb/js-sdk": "git+ssh://github.com/SlashDB/slashdb-js.git"        
-  },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "@slashdb/js-sdk": "git+ssh://github.com/SlashDB/slashdb-js.git"        
   }
 }
