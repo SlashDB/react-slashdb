@@ -1,7 +1,7 @@
 {
   "name": "react-slashdb",
-  "version": "1.0.0",
-  "description": "SlashDB SDK for ReactJS and vanilla JS projects.  ",
+  "version": "2.0.0",
+  "description": "SlashDB SDK for React apps",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,9 +22,11 @@
     "url": "https://github.com/SlashDB/react-slashdb/issues"
   },
   "homepage": "https://github.com/SlashDB/react-slashdb#readme",
+  "dependencies": {
+    "@slashdb/js-sdk": "git+ssh://github.com/SlashDB/slashdb-js.git"        
+  },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@slashdb/js-sdk": "git+ssh://github.com/SlashDB/slashdb-js.git"        
   }
 }
