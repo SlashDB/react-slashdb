@@ -177,7 +177,7 @@ The hook returns back data from the requested resource when called, and four fun
 
 **Return value ```getData```** - ```getData(filter, headers)``` - a function reference to fetch data from the database.   Calls to this function will refresh the current value of ```data``` with new values retrieved from the database from the ```resource``` passed to ```useDataDiscovery```.  If a default filter was passed to ```useDataDiscovery```, the data will be filtered.  Keep in mind that the contents of ```data``` will be overwritten any time this function is called.  If you need to drill down into the database, you can use the ```useDataDiscovery``` hook again with a new set of parameters, or drill down manually into the record set contained in ```data```.
     
-    getList(['_columnName_/_value_', { _headerKey_ : _headerValue_} );
+    getList('_columnName_/_value_', { _headerKey_ : _headerValue_} );
     or
     getList();
 
@@ -190,7 +190,7 @@ The hook returns back data from the requested resource when called, and four fun
  
 **Return value ```putData```** - ```putData(filter, body, headers)``` - a function reference to update records in the database.   The function takes an optional filter parameter, and a Javascript object or JSON string containing containing the body of the PUT request.  The data provided in the ```body``` should conform to your database schema.  As with ```postData```, you can send data in CSV/XML format by setting the ```Content-Type``` header.
 
-    putData(['TaskList', 'TaskListId', `${TaskListId}`], { [fieldName]: `${fieldValue}` });
+    putData('_columnName_/_value_', { column1Name: value });
 
 **Return value ```deleteData```** - ```deleteData(filter, headers)``` - a function reference to remove data from the database.  It takes an optional filter parameter, and accepts an optional header object.
 
