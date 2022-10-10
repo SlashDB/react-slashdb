@@ -60,7 +60,7 @@ We provide the SlashDB configuration details to a React app using the ```SlashDB
 It is recommended to wrap the root component of your ReactJS app (in the code above, ```<App/>```) inside the ```SlashDBProvider``` so that the connection parameters are available for use down the component tree; they can be accessed in other components using the following code:
 
     import { useContext } from 'react';
-    import { SlashDBProvider } from '@slashdb/react-slashdb';
+    import { SlashDBContext } from '@slashdb/react-slashdb';
     .
     .
     .
