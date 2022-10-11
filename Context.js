@@ -11,11 +11,11 @@ const SlashDBContext = createContext({});
  * See SlashDBConsumer for more info on how to use params passed. I.e. Wrap App component so that context data is avaliable
  * throughout application.
  *
- * @param {Object} param0 Holds two params: baseUrl (a.k.a. slashdb server to be accessed. E.g. https://demo.slashdb.com)
- * and setUpOptions. setUpOptions is an object of key value pairs. dataFormatExt and apiKey are the keys handleable at this stage
+ * @param {Object} param0 holds two parameters: baseUrl (hostname/IP of SlashdDB instance to be accessed, e.g. https://demo.slashdb.com)
+ * and setUpOptions. setUpOptions is an object of key value pairs. 'apiKey' is the only key that can be set currently
  * of development.
- * @param {String} param0.baseUrl Url of slashDB server.
- * @param {{}} param0.setUpOptions Params for set up of connections such as dataFormat and API key. dataFormatExt: "value", apiKey: "value"
+ * @param {string} param0.baseUrl URL of SlashDB instance
+ * @param {Object} param0.setUpOptions parameters for connection { apiKey: "somevalue" }
  */
 const SlashDBProvider = ({ baseUrl, setUpOptions, children }) =>
   React.createElement(
