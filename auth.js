@@ -1,53 +1,57 @@
+import { removeSdbClients, checkClientAuthStatus } from './hooks.js';
+
+
+/** 
+ * Authentication singleton for logging in and out of SlashDB instances.  
+ */
 class Auth {
   constructor() {
-    this.authenticated = false;
-    this.sdbClient = null;
   }
 
   /**
-   * Method for log-in purposes takes username, password, and function to perform. Basic idea is to authenticate and then do something
-   * like push route to restricted page of application.
+   * Log into a SlashDB instance with a username and password.  Executes provided function on successful login
    *
-   * @param {String} username Username credential.
-   * @param {String} password Password credential.
-   * @param {function} fnc Function to be executed after valiadation of session.
+   * @param {string} username user to log into SlashDB instance with
+   * @param {string} password password for user
+   * @param {SlashDBClient} sdbClient a SlashDBClient object containing SlashDB host config, obtained from calling the useSetUp hook
+   * @param {function} fnc function to be executed after successful login
    */
   async login(username, password, sdbClient, fnc) {
-    this.sdbClient = sdbClient;
-    this.sdbClient.username = username;
-    if (!sdbClient.apiKey) {
-      this.sdbClient.password = password;
-    }
-    else {
-      console.warn('API key set, ignoring password');
-    }
     try {
-      await this.sdbClient.login()
+      await sdbClient.login(username, password)
         .then( () => {
-          if (this.sdbClient.isAuthenticatedFlag) {
-            this.authenticated = true;
+          if (sdbClient.isAuthenticated()) {
             fnc();
           }
         });
     }
     catch(e) {
-      this.authenticated = false;
       console.error(e);
       return;
     }
   }
 
   /**
-   * Send logout request
+   * Log out of SlashDB instance
    *
    * @param {function} fnc to be executed after logout. Eg. push route away from restricted area of application.
+   * @param {string} [instanceName] instance to log out; if not provided, all registered instances are logged out
    */
-  async logout(fnc) {
-    this.sdbClient.logout();
-    this.authenticated = false;
+  async logout(fnc, instanceName = undefined) {
+    removeSdbClients(instanceName);
     fnc();
   }
 
+  /**
+   * Check if client authenticated
+   *
+   * @param {string} [instanceName] instance to log out; if not provided, the default instance is checked
+   * @returns {boolean} flag indicating if client is currently authenticated to SlashDB instance
+   */  
+  async clientIsAuthenticated(instanceName = 'default') {
+    const status = await checkClientAuthStatus(instanceName);
+    return status;
+  }
 }
 
 export default new Auth();
