@@ -28,12 +28,45 @@ const sdbClientRegistry = {}
   */
 const useSetUp = (instanceName = 'default', host = undefined, username = undefined, apiKey = undefined ) => {
   
-  if (instanceName === 'default' && !host) {
-      const { baseUrl, setUpOptions } = useContext(SlashDBContext);
-      sdbClientRegistry['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey);
+  // // if instance already exists and host parameter is provided, warn about overwrite
+  // if (sdbClientRegistry.hasOwnProperty(instanceName) && host) {
+  //   console.warn(`A SlashDB client with the name '${instanceName}' already exists, overwriting`);
+  // } 
+
+  // handling for the special default instanceName 
+  if (instanceName === 'default') {
+    // try and get SlashDBProvider config, if it exists
+    const { baseUrl, setUpOptions } = useContext(SlashDBContext);
+
+    // when the default hasn't been created yet
+    if (!sdbClientRegistry.hasOwnProperty('default')) {
+      // if SlashDBProvider configured, create default using its config
+      if (baseUrl) {
+        sdbClientRegistry['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey);
+      }
+      // otherwise, create default using provided params
+      else {
+        sdbClientRegistry['default'] = new SlashDBClient(host, username, apiKey);
+      }       
+    }      
+
+    else {
+      if (host) {
+        // if SlashDBProvider component configured and and attempting to overwrite default, don't allow
+        if (baseUrl) {
+          console.warn(`SlashDB client 'default' was previously configured with SlashDBProvider - cannot overwrite`); 
+        }
+        else {
+          sdbClientRegistry['default'] = new SlashDBClient(host, username, apiKey);
+        }
+      }
+    }
+    return sdbClientRegistry['default'];        
   }
-  else {
-      sdbClientRegistry[instanceName] = new SlashDBClient(host, username, apiKey);
+
+  // when host parameter provided, overwrite client object
+  else if (host) {
+    sdbClientRegistry[instanceName] = new SlashDBClient(host, username, apiKey);
   }
   
   return sdbClientRegistry[instanceName];
