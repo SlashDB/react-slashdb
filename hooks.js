@@ -42,7 +42,12 @@ const useSetUp = (instanceName = 'default', host = undefined, username = undefin
     if (!sdbClientRegistry.hasOwnProperty('default')) {
       // if SlashDBProvider configured, create default using its config
       if (baseUrl) {
-        sdbClientRegistry['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey);
+        if (setUpOptions) {
+          sdbClientRegistry['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey);
+        }
+        else {
+          sdbClientRegistry['default'] = new SlashDBClient(baseUrl);
+        }
       }
       // otherwise, create default using provided params
       else {

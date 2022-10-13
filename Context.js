@@ -17,7 +17,7 @@ const SlashDBContext = createContext({});
  * @param {string} param0.baseUrl URL of SlashDB instance
  * @param {Object} param0.setUpOptions parameters for connection { apiKey: "somevalue" }
  */
-const SlashDBProvider = ({ baseUrl, setUpOptions, children }) =>
+const SlashDBProvider = ({ baseUrl, setUpOptions = null, children }) =>
   React.createElement(
     SlashDBContext.Provider,
     { value: { baseUrl, setUpOptions } },
