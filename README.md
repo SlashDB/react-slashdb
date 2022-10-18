@@ -4,13 +4,13 @@
 [SlashDB](https://www.slashdb.com/), [SlashDB documentation](https://www.slashdb.com/documentation/), [demo task list app](https://github.com/SlashDB/taskapp-demo), [react-slashdb documentation](https://slashdb.github.io/react-slashdb/)
 ---
 
-React-slashdb is an SDK for use in ReactJS and vanilla Javascript projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the ReactJS-geared part of the package.
+react-slashdb is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the ReactJS-geared part of the package.
 
 Visit [SlashDB](https://www.slashdb.com/) and [SlashDB user guide](https://docs.slashdb.com/user-guide/) to learn more about SlashDB.
 
 ## Documentation
 
-Please visit [SlashDB documentation](https://www.slashdb.com/documentation/) to learn about all methods and functions available in react-slashdb. There you can find a full and descriptive information about all exposed functions and methods in the SDK. 
+Check out the [SlashDB documentation](https://www.slashdb.com/documentation/) to learn about all the methods and functions used in SlashDB that are exposed by this SDK. 
 
 ## Quick Start Guide 
 
@@ -18,19 +18,19 @@ Please visit [SlashDB documentation](https://www.slashdb.com/documentation/) to 
 
 To start using react-slashdb you need to have Node.js set up on your system. Please get the LTS version of Node.js here [Node.js](https://nodejs.org/en/).
 
-This package has a peer dependency of react and react-dom so these packages will be installed on your system as well if required. Please see [react-dom](https://www.npmjs.com/package/react-dom) and [react](https://www.npmjs.com/package/react). The SDK is split in two parts; ReactJS geared functionality and vanilla JS geared functionality, which does not require ReactJS to function.
+This package has a peer dependency of react and react-dom so these packages will be installed on your system as well if required. Please see [react-dom](https://www.npmjs.com/package/react-dom) and [react](https://www.npmjs.com/package/react). The SDK also requires the [SlashDB Vanilla JS SDK](https://github.com/SlashDB/slashdb-js), which is also included as a dependency.
 
 To get started, either install the package globally using the following npm command in a terminal:
 
-    npm install -g react-slashdb
+    npm install -g @slashdb/react-slashdb
 
 or navigate in your file system to an existing project in which you wish to use the package and run the following command in a terminal:
 
-    npm install react-slashdb
+    npm install @slashdb/react-slashdb
 
 Once the package is installed, you can use an import stament to tap into the functionality of react-slashdb, e.g. :
 
-    import { SlashDBProvider } from 'react-slashdb';
+    import { SlashDBProvider } from '@slashdb/react-slashdb';
 
 ```SlashDBProvider``` is only one of the many functions, methods or components available from this SDK. More of them are described later in this document.
 
@@ -38,28 +38,29 @@ Once the package is installed, you can use an import stament to tap into the fun
 
 ### SlashDBProvider and SlashDBContext
 
-To set up a connection to a SlashDB server and optionally pass an API key, we need to call the component ```SlashDBProvider``` and provide some configuration parameters.  Under the hood, the ReactJS custom components and hooks used in this app call functions defined in the [SlashDB vanilla Javascript SDK].  See code below for how to use SlashDBProvider:
+We provide the SlashDB configuration details to a React app using the ```SlashDBProvider``` component.  Under the hood, the ReactJS custom components and hooks used in an app use functions and classes defined in the [SlashDB vanilla Javascript SDK](https://github.com/SlashDB/slashdb-js).  See an example below of how to use ```SlashDBProvider```:
 
-    import { SlashDBProvider } from './Context';
+    import { SlashDBProvider } from '@slashdb/react-slashdb';
     .
     .
     .
     <SlashDBProvider
         baseUrl={'https://demo.slashdb.com/'}
         setUpOptions={{
-        dataFormatExt: 'json',
-        apiKey: 'API key value',
+        username: slashDBUserName,
+        password: slashDBUserPassword,
+        //apiKey: slashDBUserAPIKey
     }}
     >
       <App />
     </SlashDBProvider>
 
-```baseUrl``` and ```dataFormatExt``` are required parameters needed to connect to the SlashDB server.  If the server allows CORS or the database doesn't require authentication, an API key is not needed. If the server doesn't allow CORS and authentication is needed, an API key must be provided. To complete authentication set up, see [auth](https://github.com/SlashDB/react-slashdb/README.md#auth) 
+```baseUrl``` is the hostname or IP address of the SlashDB server to use with your app, including the protocol (http/https) and port number if necessary.  If the database doesn't require any authentication, set a dummy value for the username and API key.  You can use a username/password in cases where the React app and the SlashDB server are hosted on the same domain name/IP; otherwise, you'll need an API key.  If you set both a username/password and an API key, the API key will take precedence.  With username/password logins, you'll need to call the ```auth.login()``` method to get a valid session cookie from the SlashDB server.  See [auth](https://github.com/SlashDB/react-slashdb/README.md#auth) for more details.
 
 It is recommended to wrap the root component of your ReactJS app (in the code above, ```<App/>```) inside the ```SlashDBProvider``` so that the connection parameters are available for use down the component tree; they can be accessed in other components using the following code:
 
     import { useContext } from 'react';
-    import { SlashDBContext } from './Context';
+    import { SlashDBContext } from '@slashdb/react-slashdb';
     .
     .
     .
@@ -67,15 +68,21 @@ It is recommended to wrap the root component of your ReactJS app (in the code ab
 
 By calling the ReactJS hook ```useContext``` with the ```SlashDBContext``` object, we can copy the connection parameters to ```{ baseUrl, setUpOptions }``` and use them as needed. 
 
-### useSetUp()
+### useSetUp(client = 'default', host = undefined, username = undefined, apiKey = undefined, password = undefined)
 
-This hook sets internal variables based on the values provided to ```SlashDBProvider``` for the connection to the SlashDB server. The SDK hooks ```useDataDiscovery``` and ```useExecuteQuery``` use this hook internally.  It is good practice to call it at the top level of a project to ensure other functionality such as ```auth.login``` works properly. See code example below: 
+This hook sets internal variables based on the values provided to ```SlashDBProvider``` for the connection to the SlashDB server. .  It is good practice to call it at or near the top level of a project to ensure other functionality such as the ```auth.login()``` method work properly. See code example below: 
 
-    import { useSetUp } from 'react-slashdb';
+    import { useSetUp } from '@slashdb/react-slashdb';
     .
     .
     .
-    useSetUp();
+    const sdbClient = useSetUp();
+
+If you provide no parameters to ```useSetup```, it will check if it has been previously called; if not, it will create a [```SlashDBClient```](https://github.com/SlashDB/slashdb-js) object that holds all the configuration info from the ```SlashDBProvider``` component.  This object is returned by ```useSetup```.  If it has been called, it will return the existing ```SlashDBClient``` object.  If your app requires connections to multiple SlashDB instances with different configurations, configure the first instance using the ```SlashDBProvider``` component and the ```useSetup``` hook with no parameters.  For any additional instances, call ```useSetup``` like so:
+    
+    useSetUp(instanceName,host,username,apiKey,password)
+
+where ```instanceName``` is a unique identifier for the instance (e.g. 'client2') and the host/username/apiKey/password parameters contain the SlashDB configuration  for the instance. The name given will be used when calling the ```useDataDiscovery``` or ```useExecuteQuery``` to perform transactions with the secondary SlashDB instance.  As before, a ```SlashDBClient``` object will be returned that holds this configuration info.  Calling ```useSetup``` with a name that has been given previously will return the existing ```SlashDBClient``` object for that instance.
 
 ### Auth
 
@@ -83,16 +90,17 @@ Auth is a class export of the SDK which allows for authentication with a usernam
     
     import { auth } from 'react-slashdb';
     
-It provides three methods: ```login```, ```isAuthenticated```, ```logout```   
+It provides two methods: ```login```, ```logout```   
 
-##### auth.login(username, password, fnc) 
-This method takes 3 parameters: ```username```, ```password``` and a function ```fnc``` that runs on successful authentication. When using an API key for authentication purposes, the value of ```password``` will not affect the authentication process; just pass a value of null as a placeholder. When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
-
-     auth.login(username, password, () => {
+##### auth.login(username, password, sdbClient, fnc) 
+This method takes 4 parameters: ```username```, ```password```, a [```SlashDBClient```](https://github.com/SlashDB/slashdb-js) object (such as the one returned by ```useSetup```, and a function ```fnc``` that runs on successful authentication. When using an API key for authentication, you can set the password to null.  When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
+    
+     const sdbClient = useSetUp();
+     auth.login(username, password, sdbClient, () => {
         // code to run if authentication is successful
      });
 
-One way to use this would be to replace ```// code to run if authentication is successful``` with something like ```props.history.push('/app')``` and also have a protected route at ```/app```. In your ```ProtectedRoute.js``` component (for example), you can use the ```auth.isAuthenticated()``` method to check if the user account has logged in successfully.  See below for an example (this code also uses [react-router-dom](https://www.npmjs.com/package/react-router-dom) for routing needs).
+One way to use this would be to replace ```// code to run if authentication is successful``` with something like ```props.history.push('/app')``` and also have a protected route at ```/app```. In your ```ProtectedRoute.js``` component (for example), you can use the ```auth.authenticated``` property to check if the user account has logged in successfully.  See below for an example (this code also uses [react-router-dom](https://www.npmjs.com/package/react-router-dom) for routing needs).
 
 App.js:
 
@@ -102,21 +110,19 @@ App.js:
      
 Login.js:
 
+     let sdbClient = useSetUp();
      ...
-     auth.login('_username_', '_password_', () => {
+     auth.login('_username_', '_password_', sdbClient, () => {
        props.history.push('/app');
      });
      
 ProtectedRoute.js:
 
      ...
-     (auth.isAuthenticated()) === false)
+     if (auth.authenticated)
      ...
      
 Don’t forget to actually import the auth module from react-slashdb. For a full code example, please see the files ```App.js```, ```Login.js``` and ```ProtectedRoute.js``` in the [demo task list app](https://github.com/SlashDB/taskapp-demo). 
-
-##### auth.isAuthenticated()
-This method simply returns a boolean value that indicates if the user is authenticated against the SlashDB server. 
 
 ##### auth.logout(fnc) 
 This method logs the user out of the active session, and then executes the provided function ```fnc```.  To use: 
@@ -125,26 +131,38 @@ This method logs the user out of the active session, and then executes the provi
         //your code here;
      }
 
-This will send a logout request to the SlashDB server; if the request is successful, the provided function will run.  For a full example, look at the [demo task list app](https://github.com/SlashDB/taskapp-demo).
+This will send a logout request to the SlashDB server, then the provided function will run.  For a full example, look at the [demo task list app](https://github.com/SlashDB/taskapp-demo).
+
+This class contains the following properties:
+
+```authenticated``` - a boolean flag that is set to true when the ```login``` method is successful
+
+```sdbClient``` - a reference to the ```SlashDBClient``` provided to the ```login``` method, used when calling ```logout```
+
 
 ### Hooks for Database Interaction and Data Retrieval
 
 The SDK exposes two custom hooks which make retrieving data and interacting with a database on a SlashDB server via GET, POST, PUT and DELETE calls simple.
-The parameters specified for the ```SlashDBProvider``` and the parameters provided to ```useDataDiscovery``` are combined to construct the URL to which the request will be made. For detailed example, please see the [demo task list app]
+The parameters specified for the ```SlashDBProvider``` and the parameters provided to ```useDataDiscovery``` are combined to construct the URL to which the request will be made. For a detailed example, please see the [demo task list app](https://github.com/SlashDB/taskapp-demo)
 
-#### useDataDiscovery(dbName, [dbTables])
-```useDataDiscovery``` provides access to the Data Discovery features of SlashDB for interaction with the database.  It takes two parameters: a string containing the database name, and an array of strings containing the path to the table that you want to retrieve data from.
+#### useDataDiscovery(database, resource, defaultFilter = '', instanceName = 'default')
+```useDataDiscovery``` provides access to the Data Discovery features of SlashDB for interaction with the database.  It takes two required parameters and two optional parameters: the ```database``` name (as configured in SlashDB), and the database ```resource``` (e.g. a table name) to transact with.  Optionally, you can provide a ```defaultFilter``` to use with GET/POST/PUT/DELETE calls (the filter can be overridden if desired).  A filter can be a SlashDB-compatible string, or a ```DataDiscoveryFilter``` object.  For more information, see the [SlashDB Data Discovery documentation](https://docs.slashdb.com/user-guide/using-slashdb/data-discovery/) and the [SlashDB Vanilla JS SDK](https://github.com/SlashDB/slashdb-js).
 
-It returns an array that holds the requested data from the database, as well as four function references which can be used to perform GET, POST, PUT, and DELETE requests with the provided database.  Here is an example of usage:
+The final optional parameter, ```instanceName```, allows transactions with any additional SlashDB instances that have been registered with the app using the ```useSetUp``` hook.  
+
+The hook returns back data from the requested resource when called, and four functions to perform GET/PUT/POST/DELETE requests.  Here's an example of usage:
 
      import { useDataDiscovery } from 'react-slashdb';
      ...
     const [data, getData, postData, putData, deleteData] = useDataDiscovery(
       '_DatabaseName_',
-      ['_TableName_']
+      '_TableName_',
+      '_columnName_/_value_'
     );
     
-**Return value ```data```** – an array containing the data retrieved from the requested tables.  The data can be used like any JS array, e.g. to map over and construct a group of components:
+**Note** - the four functions - ```getData```, ```postData```, ```putData```, ```deleteData``` - all take an optional ```filter``` parameter that allows you to override the ```defaultFilter```, in the form of a SlashDB-compatible filter or a DataDiscoveryFilter object.    They also accept passing HTTP request headers by providing a ```header``` object of key/value pairs as a parameter.  For ```getData``` and ```deleteData```, the ```header``` object is provided as a second optional parameter;  ```postData``` and ```putData``` take it as a third optional parameter.  If you need to set some, but not all, of the optional parameters (e.g. want to pass headers but don't want a filter), just set the unneeded parameter to ```undefined``` or ```null```.
+
+**Return value ```data```** – an array containing the data retrieved from the requested resource.  The data can be used like any JS array, e.g. to map over and construct a group of components:
 
     {lists.map((list) => (
      <List
@@ -157,38 +175,39 @@ It returns an array that holds the requested data from the database, as well as 
      />
     ))}
 
-**Return value ```getData```** - a function reference to fetch data from the database.   Calls to this function will refresh the current value of ```data``` with new values retrieved from the database from the table that was previously provided with ```useDataDiscovery```.  Optionally, it is possible to retrieve data from a different table using this function by providing an array of strings representing the path to the different table; keep in mind that ```data``` will be overwritten with the results, so you probably don’t want to do this unless you have a special use case.   If you need to drill down into the database, use the ```useDataDiscovery``` hook again with a new set of parameters and constants, or drill down manually - the same way you would any other array or object. 
+**Return value ```getData```** - ```getData(filter, headers)``` - a function reference to fetch data from the database.   Calls to this function will refresh the current value of ```data``` with new values retrieved from the database from the ```resource``` passed to ```useDataDiscovery```.  If a default filter was passed to ```useDataDiscovery```, the data will be filtered.  Keep in mind that the contents of ```data``` will be overwritten any time this function is called.  If you need to drill down into the database, you can use the ```useDataDiscovery``` hook again with a new set of parameters, or drill down manually into the record set contained in ```data```.
     
-    getList(['TaskList', 'TaskListId', `${TaskListId}`]);
+    getList('_columnName_/_value_', { _headerKey_ : _headerValue_} );
     or
     getList();
 
-**Return value ```postData```** - a function reference to add new data to the database.   The function takes an array of strings representing the path to the resource to access, and an object containing key:value pairs to be inserted into the table as a new record.  The key:value pair names and types should conform to your database schema.
+**Return value ```postData```** - ```postData(body, filter, headers)``` - a function reference to add new data to the database.   The function accepts a parameter containing the ```body``` of the POST request, an optional filter (note that cases where this filter would be set for a POST call would be rare) and optional HTTP request headers.  The data provided in the ```body``` should conform to your database schema.  Body data is expected to be a Javascript object or a JSON string by default.  You can provide CSV or XML data in the body, but must provide a request header that sets the ```Content-Type``` to the appropriate MIME type for the data.
 
-    postData(['TaskList'], {
-            Name: listName ? listName : 'New List',
+    postData({
+            column1Name: value,
+            column2Name: value
     })
  
-**Return value ```putData```** - a function reference to update a record in the database.   The function takes an array of strings representing the path to the resource to update, and an object containing key:value pairs that specify the columns to update and the new values for the columns.  The key:value pair names and types should conform to your database schema.
+**Return value ```putData```** - ```putData(filter, body, headers)``` - a function reference to update records in the database.   The function takes an optional filter parameter, and a Javascript object or JSON string containing containing the body of the PUT request.  The data provided in the ```body``` should conform to your database schema.  As with ```postData```, you can send data in CSV/XML format by setting the ```Content-Type``` header.
 
-    putData(['TaskList', 'TaskListId', `${TaskListId}`], { [fieldName]: `${fieldValue}` });
+    putData('_columnName_/_value_', { column1Name: value });
 
-**Return value ```deleteData```** - a function reference to remove a record from the database.  The function takes an array of strings representing the path to the resource to delete.
+**Return value ```deleteData```** - ```deleteData(filter, headers)``` - a function reference to remove data from the database.  It takes an optional filter parameter, and accepts an optional header object.
 
-    deleteData(['TaskList', 'TaskListId', `${TaskListId}`]);
+    deleteData('_columnName'_/_value_');
 
 The functions ```postData```, ```putData ``` and ```deleteData``` also refresh the value of ```data``` to reflect the current database state after their operations complete.   This allows state management of the database to be abstracted, removing the need to track the state of ```data``` using any ReactJS hooks like ```useEffects```.
 
-### useExecuteQuery(httpMethod, queryName, queryParams)
-```useExecuteQuery``` enables the use of the SQL Pass-Thru features of SlashDB.  Queries are created ahead of time in the SlashDB administrative control panel (Configure->Queries); this hook gives the developer the ability to execute those queries using the SlashDB ReactJS SDK [see SlashDB documentation for more on SQL Pass-Thru](https://docs.slashdb.com/user-guide/config/queries/).
+### useExecuteQuery(queryName, defaultParams, defHttpMethod = 'get', instanceName = 'default')
+```useExecuteQuery``` enables the use of the SQL Pass-Thru features of SlashDB.  Queries are created ahead of time in the SlashDB administrative control panel (Configure->Queries); this hook gives the developer the ability to execute those queries.  See the [SlashDB documentation](https://docs.slashdb.com/user-guide/config/queries/) for more information about SQL Pass-Thru.
 
-This hook takes three parameters: a string which specifies what HTTP method type to use (e.g. GET, POST, etc), a string representing the query name as defined in the SlashDB Queries configuration, and an object containing key:value pairs of parameters to pass to the query. It returns the query data as an array of objects, and a function reference that allows you to execute the query as desired, with the same or different parameters.
+This hook takes two required parameters: the ```queryName``` as defined in the SlashDB instance configuration, and a ```defaultParams``` object containing key/value pairs of parameters to pass to the query.   It also has two optional parameters.  ```defHttpMethod``` sets the HTTP method to use when executing the query (can be overriden, default is GET).  The ```instanceName``` parameter works exactly the same as described for ```useDataDiscovery```.  It executes the query once and returns the record set as an array of objects, along with a function reference that allows you to execute the query as desired, with the same or different parameters.
 
-    const [queryData, executeMyQuery] = useExecuteQuery(
-            'get',
+    const [queryData, execQuery] = useExecuteQuery(
             'percent-complete',
-            {
-            TaskListId: `${TaskListId}`,
-            }
+            { TaskListId: `${TaskListId}` }
     );
     
+**Return value ```queryData```** – an array containing the data retrieved from the query.  The data can be used like any JS array. 
+
+**Return value ```execQuery```** - ```execQuery(params, body, httpMethod = undefined, headers = undefined)``` - a function to execute the query passed to ```useExecuteQuery```.  Takes a ```params``` object containing key/value pairs of parameters.  Also accepts a ```body``` parameter, for queries that are configured to use POST/PUT methods.  Note that when executing a query with the POST method, the ```params``` object will be ignored.  Setting ```httpMethod``` will override the ```defHttpMethod``` given to ```useExecuteQuery``` when calling this function - this value should be one of GET/POST/PUT/DELETE.  Finally, a ```headers``` object of key/value pairs representing HTTP request headers can be passed along with the request.

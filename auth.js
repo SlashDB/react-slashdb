@@ -1,50 +1,56 @@
-import slashDB  from './slashdb';
+import { removeSdbClients, checkClientAuthStatus } from './hooks.js';
 
+
+/** 
+ * Authentication singleton for logging in and out of SlashDB instances.  
+ */
 class Auth {
   constructor() {
-    this.authenticated = slashDB.getIsAuthenticated();
   }
 
   /**
-   * Method for log-in purposes takes username, password, and function to perform. Basic idea is to authenticate and then do something
-   * like push route to restricted page of application.
+   * Log into a SlashDB instance with a username and password.  Executes provided function on successful login
    *
-   * @param {String} username Username credential.
-   * @param {String} password Password credential.
-   * @param {function} fnc Function to be executed after valiadation of session.
+   * @param {string} username user to log into SlashDB instance with
+   * @param {string} password password for user
+   * @param {SlashDBClient} sdbClient a SlashDBClient object containing SlashDB host config, obtained from calling the useSetUp hook
+   * @param {function} fnc function to be executed after successful login
    */
-  async login(username, password, fnc) {
-    await slashDB
-      .authenticateCookieSessionLogin(username, password)
-      .then(() => {
-        this.authenticated = slashDB.getIsAuthenticated();
-      })
-      .then(fnc);
+  async login(username, password, sdbClient, fnc) {
+    try {
+      await sdbClient.login(username, password)
+        .then( () => {
+          if (sdbClient.isAuthenticated()) {
+            fnc();
+          }
+        });
+    }
+    catch(e) {
+      console.error(e);
+      return;
+    }
   }
 
   /**
-   * Send logout request and terminate cookie.
+   * Log out of SlashDB instance
    *
    * @param {function} fnc to be executed after logout. Eg. push route away from restricted area of application.
+   * @param {string} [instanceName] instance to log out; if not provided, all registered instances are logged out
    */
-  async logout(fnc) {
-    await slashDB
-      .authenticateCookieSessionLogout()
-      .then(() => {
-        this.authenticated = slashDB.getIsAuthenticated();
-      })
-      .then(fnc);
+  async logout(fnc, instanceName = undefined) {
+    removeSdbClients(instanceName);
+    fnc();
   }
 
   /**
-   * Check if user is authenticated still.
+   * Check if client authenticated
    *
-   * @return {boolean} True or false value based on if user is still validly authenticated.
-   */
-  async isAuthenticated() {
-    var state;
-    state = await slashDB.isAuthenticated();
-    return state;
+   * @param {string} [instanceName] instance to log out; if not provided, the default instance is checked
+   * @returns {boolean} flag indicating if client is currently authenticated to SlashDB instance
+   */  
+  async clientIsAuthenticated(instanceName = 'default') {
+    const status = await checkClientAuthStatus(instanceName);
+    return status;
   }
 }
 
