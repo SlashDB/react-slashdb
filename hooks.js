@@ -133,6 +133,7 @@ const useDataDiscovery = (
     catch(e) {
       dbResource.extraHeaders = {};
       console.error(e);
+	  throw Error(e);
     }
   };
 
@@ -158,6 +159,7 @@ const useDataDiscovery = (
     catch(e) {
       dbResource.extraHeaders = {};
       console.error(e);
+	  throw Error(e);
     }
   };
 
@@ -183,6 +185,7 @@ const useDataDiscovery = (
       catch(e) {
         dbResource.extraHeaders = {};
         console.error(e);
+		throw Error(e);
       }
     }
 
@@ -207,6 +210,7 @@ const useDataDiscovery = (
     catch(e) {
       dbResource.extraHeaders = {};
       console.error(e);
+	  throw Error(e);
     }
   };
 
@@ -225,6 +229,7 @@ const useDataDiscovery = (
       }
       catch(e) {
         console.error(e);
+		throw Error(e);
       }
     }
     return () => (isMountedRef.current = false);
@@ -302,6 +307,7 @@ const useExecuteQuery = (
     catch(e) {
       sqlQuery.extraHeaders = {};
       console.error(e);
+	  throw Error(e);
     }
   };
 
