@@ -18,6 +18,10 @@ import { useSetUp, useDataDiscovery, useExecuteQuery } from '@slashdb/react-slas
 
 const SDBDemo = () => {
 
+    // UI state values
+	const [values,updateField] = useState({'mintotal':20,'maxtotal':100});	// set defaults for SQL Pass-Thru query parameters
+	const [filter,updateFilter] = useState({});
+
 	const [values,updateField] = useState({'mintotal':20,'maxtotal':100});	// set defaults for SQL Pass-Thru query parameters
 	const [filter,updateFilter] = useState({});
 	
