@@ -20,9 +20,9 @@ const SDBDemo = () => {
 	}
 	
 	// useSetup parameters - SlashDB config
-	const host = "https://demo.slashdb.com";
-	const username = null;
-	const apiKey = null;
+	const host = "https://demo.slashdb.com";	// set SlashDB host here
+	const username = null;	// set SlashDB username here
+	const apiKey = null;	// set SlashDB API key here
 	
 	// useSetup hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
 	useSetUp('default', host, username, apiKey);
@@ -49,6 +49,12 @@ const SDBDemo = () => {
 			try { 
 				await putResource(filterDef, values[e.target.value]);
 				document.querySelector(`td#customer${e.target.value}`).innerHTML = `Updated`;
+
+				// stop tracking changes to the row once the row values have been updated
+				updateField( (values) => {
+					delete values[e.target.value];
+					return values;
+				});
 			}
 			catch(error) {
 				document.querySelector(`td#customer${e.target.value}`).innerHTML = `Error updating`;				
@@ -57,25 +63,30 @@ const SDBDemo = () => {
 	}
 
 	// sample GET usage with wildcard filter 
-	const filterResults = (e) => {
+	const filterResults = async (e) => {
 		const col = e.target.name;
 		const val = e.target.value;
-		const newObj = {...filter, [col]:val};
-		updateFilter(newObj);
+		const updatedFilter = {...filter, [col]:val};
 
 		// handle null filter values
 		if (! e.target.value) {
 			console.log(e.target.value)
-			delete(newObj[col]);
+			delete(updatedFilter[col]);
 		}
-			
+
 		let filterString = '';
-		for (const f in newObj) {
-			filterString += `${f}/${newObj[f]}*/`;	// create SlashDB-compatible filter
+		for (const f in updatedFilter) {
+			filterString += `${f}/${updatedFilter[f]}*/`;	// create SlashDB-compatible filter
 		}
 		
 		filterString = filterString.slice(0,filterString.length-1); // chop the trailing '/'
-		getResource(filterString);
+		try { 
+			await getResource(filterString);
+			updateFilter(updatedFilter); 		// store the updated filter state
+		}
+		catch(error) {
+			console.log(error);
+		}
 	}	
 
 	
