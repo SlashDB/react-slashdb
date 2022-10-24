@@ -41,7 +41,7 @@ const SDBDemo = () => {
 
 
 
-	// sample PUT usage with filter - updates customer fields
+	// DataDiscovery sample PUT usage with filter - updates customer fields
 	const updateRecord = async (e) => {
 		if (values[e.target.value]) {
 			const filterDef = `CustomerId/${e.target.value}`;	// create a SlashDB-compatible filter
@@ -62,7 +62,7 @@ const SDBDemo = () => {
 		}
 	}
 
-	// sample GET usage with wildcard filter 
+	// DataDiscovery sample GET usage with wildcard filter 
 	const filterResults = async (e) => {
 		const col = e.target.name;
 		const val = e.target.value;
@@ -105,7 +105,7 @@ const SDBDemo = () => {
 		);
 	})
 	
-	// get query parameters and execute query
+	// SQL Pass-Thru execution - get query parameters and execute query
 	const fireQuery = (e) => {
 		const mintotal = values['mintotal'];
 		const maxtotal = values['maxtotal'];
