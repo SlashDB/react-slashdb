@@ -8,3 +8,122 @@ Showcases basic functionality of SlashDB React SDK features
 * _Optional_ - edit the file `src/App.js` and update the `host`, `username`, `apiKey` parameters for your SlashDB configuration
 * Run `npm start`
 
+### App.js Details
+Here is a simple functional component that uses the SlashDB React SDK to retrieve and update data and execute queries.  The full source code is **here**.  
+* First, set the configuration for SlashDB and use the `useSetup` hook to store this configuration.  Then, call the `useDataDiscovery`, and `useExecuteQuery` hooks to configure access to the resources weneed.  The `useDataDiscovery` and `useExecute` hooks return a data array and functions that we can call to interact with the data.  On any call of these functions, `useEffect` is invoked, so we don't need to worry about storing the state of the data that we are working with - the SDK will refresh the DOM for us when the functions are called and data is retrieved or modified.
+
+```
+import { useState } from 'react';
+import { useSetUp, useDataDiscovery, useExecuteQuery } from '@slashdb/react-slashdb';
+
+const SDBDemo = () => {
+
+	const [values,updateField] = useState({'mintotal':20,'maxtotal':100});	// set defaults for SQL Pass-Thru query parameters
+	const [filter,updateFilter] = useState({});
+	
+	// useSetup parameters - SlashDB config
+	const host = "https://demo.slashdb.com;
+	const username = "<username>";
+	const apiKey = "<api key>";
+	
+	// useSetup hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
+	useSetUp('default', host, username, apiKey);
+	
+	// useDataDiscovery parameters
+	const database = "Chinook";
+	const resource = "Customer";
+	// useDataDiscovery hook - interact with a database resource in the SlashDB instance configured with useSetup hook
+	const [resourceData, getResource, postResource, putResource, deleteResource] = useDataDiscovery(database, resource);
+
+	// useExecuteQuery parameters
+	const queryName = "invoices-total-range";
+	const defaultParams = 'mintotal/20/maxtotal/100';
+	// useExecuteQuery hook - interact with a query that is configured in the SlashDB instance configured with useSetup hook
+	const [queryData, execQuery] = useExecuteQuery(queryName, defaultParams);
+```
+
+* Then we create a few functions that will be triggered in the UI to peform operations:
+```
+	// sample PUT usage with filter - updates customer fields
+	const updateRecord = async (e) => {
+		if (values[e.target.value]) {
+			const filterDef = `CustomerId/${e.target.value}`;	// create a SlashDB-compatible filter
+			
+			try { 
+				await putResource(filterDef, values[e.target.value]);
+			}
+			catch(error) {
+				// error handling here
+			}
+		}
+	}
+
+	// sample GET usage with wildcard filter - used to filter results in Data Discovery table
+	const filterResults = (e) => {
+		const col = e.target.name;
+		const val = e.target.value;
+		const newObj = {...filter, [col]:val};
+		updateFilter(newObj);
+
+		// handle null filter values
+		if (! e.target.value) {
+			console.log(e.target.value)
+			delete(newObj[col]);
+		}
+			
+		let filterString = '';
+		for (const f in newObj) {
+			filterString += `${f}/${newObj[f]}*/`;	// create SlashDB-compatible filter
+		}
+		
+		filterString = filterString.slice(0,filterString.length-1); // chop the trailing '/'
+		getResource(filterString);
+	}	
+
+	// get query parameters and execute query
+	const fireQuery = (e) => {
+		const mintotal = values['mintotal'];
+		const maxtotal = values['maxtotal'];
+		const filterDef = `mintotal/${mintotal}/maxtotal/${maxtotal}`;	// SlashDB-compatible filter
+		execQuery(filterDef);
+	}	
+```
+* Here, we display the data that we are accessing with `useDataDiscovery` and `useExecuteQuery`:
+``` 
+	//  data retrieval from useDataDiscovery hook
+	let resourceTable = resourceData.map( record => {
+		return (
+			<tr key={record.CustomerId}>
+				<td><input type="text" name="FirstName" defaultValue={record.FirstName} onChange={e => handleUpdateField(e, record.CustomerId)}/></td>
+				<td><input type="text" name="LastName" defaultValue={record.LastName} onChange={e => handleUpdateField(e, record.CustomerId)}/></td>
+				<td><input type="text" name="City" defaultValue={record.City} onChange={e => handleUpdateField(e, record.CustomerId)}/></td>
+				<td><input type="text" name="State" defaultValue={record.State} onChange={e => handleUpdateField(e, record.CustomerId)}/></td>
+				<td><input type="text" name="Country" defaultValue={record.Country} onChange={e => handleUpdateField(e, record.CustomerId)}/></td>					
+				<td><button value={record.CustomerId} onClick={e => updateRecord(e)}>Update Record</button></td>
+				<td id={`customer${record.CustomerId}`}></td>
+			</tr>
+		);
+	})
+	
+
+	// data retrieval from useExecuteQuery hook
+	let queryTable = queryData.map( (record, i) => {
+		return (
+			<tr key={i}>
+				<td>{record.InvoiceId}</td>
+				<td>{record.CustomerId}</td>
+				<td>{record.InvoiceDate}</td>
+				<td>{record.BillingAddress}</td>
+				<td>{record.BillingCity}</td>
+				<td>{record.BillingState}</td>
+				<td>{record.BillingCountry}</td>
+				<td>{record.BillingPostalCode}</td>
+				<td>{record.Total}</td>
+			</tr>
+		);
+	})	
+	
+	return ( ... ) // render tables with data
+		
+}
+```
