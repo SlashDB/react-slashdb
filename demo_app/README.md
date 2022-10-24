@@ -10,7 +10,7 @@ Showcases basic functionality of SlashDB React SDK features
 
 ### App.js Details
 Here is a simple functional component that uses the SlashDB React SDK to retrieve and update data and execute queries.  The full source code is [**here**](https://github.com/SlashDB/react-slashdb/blob/main/demo_app/src/App.js).  
-* First, set the configuration for SlashDB and use the `useSetup` hook to store this configuration.  Then, call the `useDataDiscovery`, and `useExecuteQuery` hooks to configure access to the resources weneed.  The `useDataDiscovery` and `useExecute` hooks return a data array and functions that we can call to interact with the data.  On any call of these functions, `useEffect` is invoked, so we don't need to worry about storing the state of the data that we are working with - the SDK will refresh the DOM for us when the functions are called and data is retrieved or modified.
+* First, set the configuration for SlashDB and use the `useSetup` hook to store this configuration.  Then, call the `useDataDiscovery`, and `useExecuteQuery` hooks to configure access to the resources that we need.  The `useDataDiscovery` and `useExecute` hooks return a data array and functions that we can call to interact with the data.  On any call to these functions, `useEffect` is invoked, so we don't need to worry about storing the state of the data that we are working with - the SDK will refresh the DOM for us when the functions are called and data is retrieved or modified.
 
 ```
 import { useState } from 'react';
@@ -65,26 +65,31 @@ const SDBDemo = () => {
 		}
 	}
 
-	// sample GET usage with wildcard filter - used to filter results in Data Discovery table
-	const filterResults = (e) => {
+	// sample GET usage with wildcard filter 
+	const filterResults = async (e) => {
 		const col = e.target.name;
 		const val = e.target.value;
-		const newObj = {...filter, [col]:val};
-		updateFilter(newObj);
+		const updatedFilter = {...filter, [col]:val};
 
 		// handle null filter values
 		if (! e.target.value) {
 			console.log(e.target.value)
-			delete(newObj[col]);
+			delete(updatedFilter[col]);
 		}
-			
+
 		let filterString = '';
-		for (const f in newObj) {
-			filterString += `${f}/${newObj[f]}*/`;	// create SlashDB-compatible filter
+		for (const f in updatedFilter) {
+			filterString += `${f}/${updatedFilter[f]}*/`;	// create SlashDB-compatible filter
 		}
 		
 		filterString = filterString.slice(0,filterString.length-1); // chop the trailing '/'
-		getResource(filterString);
+		try { 
+			await getResource(filterString);
+			updateFilter(updatedFilter); 		// store the updated filter state
+		}
+		catch(error) {
+			console.log(error);
+		}
 	}	
 
 	// get query parameters and execute query
