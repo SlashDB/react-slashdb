@@ -343,7 +343,7 @@ export function removeSdbClients(instanceName = undefined) {
   }
 }
 
-/** Helper to check client authentication status - used in Auth logout method
+/** Helper to check client authentication status - used in Auth clientIsAuthenticated method
  * @param {string} instanceName the SlashDB client instance check
  * @returns {boolean} flag indicating if client is currently authenticated to SlashDB server
 */
