@@ -12,13 +12,10 @@ const SDBDemo = () => {
 	const handleUpdateField = (e, customerId) => {
 		const col = e.target.name;
 		if (customerId) {
-			const newObj = { ...values, [customerId]: { ...values[customerId], [col] : e.target.value }};
-			updateField( newObj );
+			updateField( (values) => ({ ...values, [customerId]: { ...values[customerId], [col] : e.target.value }}) );
 		}
 		else {
-
-			const newObj = { ...values, [col] : e.target.value} ;
-			updateField( newObj );
+			updateField( (values) =>  ( { ...values, [col] : e.target.value} ) );
 		}
 	}
 	
@@ -124,7 +121,7 @@ const SDBDemo = () => {
 	
 	return (
 		<div>
-			<h3>Data Discovery - Customer Data Table</h3>
+			<h3>Data Discovery - {database} Database - {resource} Data Table</h3>
 			<table style={{ margin: '40px auto', display: 'inline-block', height: '300px', minWidth:'66%', overflowY: 'auto'}}>
 				<thead style={{ marginTop: '-55px', position: 'absolute'}}>
 					<tr>
