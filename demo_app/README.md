@@ -21,9 +21,6 @@ const SDBDemo = () => {
     // UI state values
 	const [values,updateField] = useState({'mintotal':20,'maxtotal':100});	// set defaults for SQL Pass-Thru query parameters
 	const [filter,updateFilter] = useState({});
-
-	const [values,updateField] = useState({'mintotal':20,'maxtotal':100});	// set defaults for SQL Pass-Thru query parameters
-	const [filter,updateFilter] = useState({});
 	
 	// useSetup parameters - SlashDB config
 	const host = "https://demo.slashdb.com";	// set SlashDB host here
