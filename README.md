@@ -149,7 +149,7 @@ This class contains the following properties:
 The SDK exposes two custom hooks which make retrieving data and interacting with a database on a SlashDB server via GET, POST, PUT and DELETE calls simple.
 The parameters specified for the ```SlashDBProvider``` and the parameters provided to ```useDataDiscovery``` are combined to construct the URL to which the request will be made. For a detailed example, please see the [demo task list app](https://github.com/SlashDB/taskapp-demo)
 
-#### useDataDiscovery(database, resource, defaultFilter = '', instanceName = 'default')
+### useDataDiscovery(database, resource, defaultFilter = '', instanceName = 'default')
 ```useDataDiscovery``` provides access to the Data Discovery features of SlashDB for interaction with the database.  It takes two required parameters and two optional parameters: the ```database``` name (as configured in SlashDB), and the database ```resource``` (e.g. a table name) to transact with.  Optionally, you can provide a ```defaultFilter``` to use with GET/POST/PUT/DELETE calls (the filter can be overridden if desired).  A filter can be a SlashDB-compatible string, or a ```DataDiscoveryFilter``` object.  For more information, see the [SlashDB Data Discovery documentation](https://docs.slashdb.com/user-guide/using-slashdb/data-discovery/) and the [SlashDB JavaScript SDK](https://github.com/SlashDB/slashdb-js).
 
 The final optional parameter, ```instanceName```, allows transactions with any additional SlashDB instances that have been registered with the app using the ```useSetUp``` hook.  
