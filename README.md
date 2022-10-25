@@ -4,7 +4,7 @@
 [SlashDB](https://www.slashdb.com/), [SlashDB documentation](https://www.slashdb.com/documentation/), [demo task list app](https://github.com/SlashDB/taskapp-demo), [react-slashdb documentation](https://slashdb.github.io/react-slashdb/)
 ---
 
-react-slashdb is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the React geared part of the package.  It makes use of the [SlashDB Javascript SDK](https://github.com/SlashDB/slashdb-js).
+react-slashdb is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the React geared part of the package.  It makes use of the [SlashDB Javascript SDK](https://github.com/SlashDB/js-slashdb).
 
 Visit [SlashDB](https://www.slashdb.com/) and [SlashDB user guide](https://docs.slashdb.com/user-guide/) to learn more about SlashDB.
 
@@ -18,7 +18,7 @@ Check out the [SlashDB documentation](https://www.slashdb.com/documentation/) to
 
 To start using react-slashdb you need to have Node.js set up on your system. Please get the LTS version of Node.js here [Node.js](https://nodejs.org/en/).
 
-This package has a peer dependency of react and react-dom so these packages will be installed on your system as well if required. Please see [react-dom](https://www.npmjs.com/package/react-dom) and [react](https://www.npmjs.com/package/react). The SDK also requires the [SlashDB JavaScript SDK](https://github.com/SlashDB/slashdb-js), which is also included as a dependency.
+This package has a peer dependency of react and react-dom so these packages will be installed on your system as well if required. Please see [react-dom](https://www.npmjs.com/package/react-dom) and [react](https://www.npmjs.com/package/react). The SDK also requires the [SlashDB JavaScript SDK](https://github.com/SlashDB/js-slashdb), which is also included as a dependency.
 
 To get started, either install the package globally using the following npm command in a terminal:
 
@@ -43,7 +43,7 @@ Once the package is installed, you can use an import stament to tap into the fun
 ## Classes/Hooks/Functions
 ### SlashDBProvider and SlashDBContext
 
-We can optionally provide the SlashDB configuration details to a React app using the ```SlashDBProvider``` component.  Under the hood, the React custom components and hooks used in an app use functions and classes defined in the [SlashDB Javascript SDK](https://github.com/SlashDB/slashdb-js).  See an example below of how to use ```SlashDBProvider```:
+We can optionally provide the SlashDB configuration details to a React app using the ```SlashDBProvider``` component.  Under the hood, the React custom components and hooks used in an app use functions and classes defined in the [SlashDB Javascript SDK](https://github.com/SlashDB/js-slashdb).  See an example below of how to use ```SlashDBProvider```:
 
     import { SlashDBProvider } from '@slashdb/react-slashdb';
     .
@@ -82,7 +82,7 @@ This hook sets internal variables based on the values provided to ```SlashDBProv
     .
     const sdbClient = useSetUp();
 
-If you provide no parameters to ```useSetup```, it will check if it has been previously called; if not, it will create a [```SlashDBClient```](https://github.com/SlashDB/slashdb-js) object that holds all the configuration info from the ```SlashDBProvider``` component.  This object is returned by ```useSetup```.  If it has been called, it will return the existing ```SlashDBClient``` object.  If your app requires connections to multiple SlashDB instances with different configurations, configure the first instance using the ```SlashDBProvider``` component and the ```useSetup``` hook with no parameters.  For any additional instances, call ```useSetup``` like so:
+If you provide no parameters to ```useSetup```, it will check if it has been previously called; if not, it will create a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object that holds all the configuration info from the ```SlashDBProvider``` component.  This object is returned by ```useSetup```.  If it has been called, it will return the existing ```SlashDBClient``` object.  If your app requires connections to multiple SlashDB instances with different configurations, configure the first instance using the ```SlashDBProvider``` component and the ```useSetup``` hook with no parameters.  For any additional instances, call ```useSetup``` like so:
     
     useSetUp(instanceName,host,username,apiKey,password)
 
@@ -97,7 +97,7 @@ Auth is a class export of the SDK which allows for authentication with a usernam
 It provides two methods: ```login```, ```logout```   
 
 ##### auth.login(username, password, sdbClient, fnc) 
-This method takes 4 parameters: ```username```, ```password```, a [```SlashDBClient```](https://github.com/SlashDB/slashdb-js) object (such as the one returned by ```useSetup```, and a function ```fnc``` that runs on successful authentication. When using an API key for authentication, you can set the password to null.  When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
+This method takes 4 parameters: ```username```, ```password```, a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object (such as the one returned by ```useSetup```, and a function ```fnc``` that runs on successful authentication. When using an API key for authentication, you can set the password to null.  When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
     
      const sdbClient = useSetUp();
      auth.login(username, password, sdbClient, () => {
@@ -150,7 +150,7 @@ The SDK exposes two custom hooks which make retrieving data and interacting with
 The parameters specified for the ```SlashDBProvider``` and the parameters provided to ```useDataDiscovery``` are combined to construct the URL to which the request will be made. For a detailed example, please see the [demo task list app](https://github.com/SlashDB/taskapp-demo)
 
 ### useDataDiscovery(database, resource, defaultFilter = '', instanceName = 'default')
-```useDataDiscovery``` provides access to the Data Discovery features of SlashDB for interaction with the database.  It takes two required parameters and two optional parameters: the ```database``` name (as configured in SlashDB), and the database ```resource``` (e.g. a table name) to transact with.  Optionally, you can provide a ```defaultFilter``` to use with GET/POST/PUT/DELETE calls (the filter can be overridden if desired).  A filter can be a SlashDB-compatible string, or a ```DataDiscoveryFilter``` object.  For more information, see the [SlashDB Data Discovery documentation](https://docs.slashdb.com/user-guide/using-slashdb/data-discovery/) and the [SlashDB JavaScript SDK](https://github.com/SlashDB/slashdb-js).
+```useDataDiscovery``` provides access to the Data Discovery features of SlashDB for interaction with the database.  It takes two required parameters and two optional parameters: the ```database``` name (as configured in SlashDB), and the database ```resource``` (e.g. a table name) to transact with.  Optionally, you can provide a ```defaultFilter``` to use with GET/POST/PUT/DELETE calls (the filter can be overridden if desired).  A filter can be a SlashDB-compatible string, or a ```DataDiscoveryFilter``` object.  For more information, see the [SlashDB Data Discovery documentation](https://docs.slashdb.com/user-guide/using-slashdb/data-discovery/) and the [SlashDB JavaScript SDK](https://github.com/SlashDB/js-slashdb).
 
 The final optional parameter, ```instanceName```, allows transactions with any additional SlashDB instances that have been registered with the app using the ```useSetUp``` hook.  
 

@@ -25,6 +25,6 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@slashdb/js-sdk": "git+ssh://github.com/SlashDB/slashdb-js.git"        
+    "@slashdb/js-slashdb": "git+ssh://github.com/SlashDB/js-slashdb.git"        
   }
 }
