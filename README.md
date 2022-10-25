@@ -92,7 +92,7 @@ where ```instanceName``` is a unique identifier for the instance (e.g. 'client2'
 
 Auth is a class export of the SDK which allows for authentication with a username and password or API key.  The class is imported like so:
     
-    import { auth } from 'react-slashdb';
+    import { auth } from '@slashdb/react-slashdb';
     
 It provides two methods: ```login```, ```logout```   
 
@@ -156,7 +156,7 @@ The final optional parameter, ```instanceName```, allows transactions with any a
 
 The hook returns back data from the requested resource when called, and four functions to perform GET/PUT/POST/DELETE requests.  Here's an example of usage:
 
-     import { useDataDiscovery } from 'react-slashdb';
+     import { useDataDiscovery } from '@slashdb/react-slashdb';
      ...
     const [data, getData, postData, putData, deleteData] = useDataDiscovery(
       '_DatabaseName_',
