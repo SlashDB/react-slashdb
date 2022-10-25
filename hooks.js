@@ -257,7 +257,7 @@ const useExecuteQuery = (
   defHttpMethod = 'get',
   instanceName = 'default'
 ) => {
-  //redundant call - in case user did not call useSetUp at top level of project
+  
   const sdbClient = sdbClientRegistry[instanceName];
   const sqlQuery = new SQLPassThruQuery(queryName, sdbClient);
 
