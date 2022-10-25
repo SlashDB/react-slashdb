@@ -29,40 +29,100 @@
             <pre class="prettyprint source linenums"><code>/**
  * Custom React hook for ease of state management with use of SlashDB and SDK.
  */
-//Import React built-in hooks to use under the hood.
+// import React built-in hooks to use under the hood.
 import { useState, useEffect, useContext, useRef } from 'react';
-//Import vanilla JS class from SDK.
-import { default as slashDB } from './slashdb';
-//Import custom context for use of param passing thoughout project.
+
+
+
+// import custom context for retrieving primary SlashDB instance config
 import { SlashDBContext } from './Context';
 
+// required JavaScript SDK classes
+import { SlashDBClient } from '@slashdb/js-sdk/modules/slashdbclient.js';
+import { DataDiscoveryResource } from "@slashdb/js-sdk/modules/datadiscovery.js";
+import { SQLPassThruQuery } from "@slashdb/js-sdk/modules/sqlpassthru.js";
+
+
+// list of SlashDB clients for use by hooks
+const sdbClientRegistry = {}
 /**
- * Take values for baseUrl and setUpOptions passed to SlashDBContext via evoking.
- * SlashDBProvider at top level of user/client project and call method setUp passing
- * those params.
- */
-const useSetUp = () => {
-  const { baseUrl, setUpOptions } = useContext(SlashDBContext);
-  slashDB.setUp(baseUrl, setUpOptions);
+ * Create a SlashDB client object for use with hooks and store in a local registry.  If no parameters are provided, create a client object using
+ * the parameters configured with the SlashDBProvider component
+ * @param {string} [instanceName] a name to identify the client in the registry; if not provided, will be named 'default'
+ * @param {string} [host] hostname of the SlashDB instance to connect to, with protocol/port
+ * @param {string} [username] username for SlashDB client to authenticate with
+ * @param {string} [apiKey] API key for the username
+ * @returns {SlashDBClient} a reference to the SlashDB client that was created
+  */
+const useSetUp = (instanceName = 'default', host = undefined, username = undefined, apiKey = undefined ) => {
+  
+  // // if instance already exists and host parameter is provided, warn about overwrite
+  // if (sdbClientRegistry.hasOwnProperty(instanceName) &amp;&amp; host) {
+  //   console.warn(`A SlashDB client with the name '${instanceName}' already exists, overwriting`);
+  // } 
+
+  // handling for the special default instanceName 
+  if (instanceName === 'default') {
+    // try and get SlashDBProvider config, if it exists
+    const { baseUrl, setUpOptions } = useContext(SlashDBContext);
+
+    // when the default hasn't been created yet
+    if (!sdbClientRegistry.hasOwnProperty('default')) {
+      // if SlashDBProvider configured, create default using its config
+      if (baseUrl) {
+        if (setUpOptions) {
+          sdbClientRegistry['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey);
+        }
+        else {
+          sdbClientRegistry['default'] = new SlashDBClient(baseUrl);
+        }
+      }
+      // otherwise, create default using provided params
+      else {
+        sdbClientRegistry['default'] = new SlashDBClient(host, username, apiKey);
+      }       
+    }      
+
+    else {
+      if (host) {
+        // if SlashDBProvider component configured and and attempting to overwrite default, don't allow
+        if (baseUrl) {
+          console.warn(`SlashDB client 'default' was previously configured with SlashDBProvider - cannot overwrite`); 
+        }
+        else {
+          sdbClientRegistry['default'] = new SlashDBClient(host, username, apiKey);
+        }
+      }
+    }
+    return sdbClientRegistry['default'];        
+  }
+
+  // when host parameter provided, overwrite client object
+  else if (host) {
+    sdbClientRegistry[instanceName] = new SlashDBClient(host, username, apiKey);
+  }
+  
+  return sdbClientRegistry[instanceName];
 };
 
+
 /**
- * Hook for use of datadiscovery feature of SlashDB.
+ * Hook for accessing SlashDB Data Discovery feature
  *
- * @param {String} database Name of database to be accessed.
- * @param {array} defaultFilterParameters Array with names of resources to be accesed i.e. table name, column name, comlumn value
- * e.g. [Album, AlbumId, 1, Artist]
- * @param {Object} queryStrParameters Query params in key value pairs format to be sent via url e.g. {limit: 29} => ?limit=29
- * @returns {array} Array with data accessed (usually whole database)
- * and GET, POST, PUT and DELETE functions for interaction with the data accessed.
+ * @param {string} database name of the database containing the desired resource/table
+ * @param {string} resource the resource/table to discover
+ * @param {string | DataDiscoveryFilter} [defaultFilter] optional string/DataDiscovery filter object containing a default filter for the resource
+ * @param {string} [instanceName] optional name of SlashDB client that has been previously created with useSetUp() hook; default is 'default'
+ * @returns {array} array, first element is data for given resource/table and subsequent elements are function references to execute on-demand GET/POST/PUT/DELETE calls on the resource
  */
 const useDataDiscovery = (
   database,
-  defaultFilterParameters,
-  queryStrParameters
+  resource,
+  defaultFilter = '',
+  instanceName = 'default'
 ) => {
-  //Redundant call - in case user did not call useSetUp at top level of project
-  useSetUp();
+  
+  const sdbClient = sdbClientRegistry[instanceName];
 
   const isMountedRef = useRef(null);
 
@@ -77,96 +137,128 @@ const useDataDiscovery = (
     setDidUpdate(new Date().getTime());
   };
 
-  //filterParam rename
+  const dbResource = new DataDiscoveryResource(database, resource, sdbClient);
+ 
+  
   /**
-   *
-   * @param {array} defaultFilterParameters Array with names of resources to be accesed i.e. table name, column name, comlumn value
-   * eg. [Album, AlbumId, 1, Artist]
-   * @param {Object} queryStrParameters Query params in key value pairs format to be sent via url e.g. {limit: 29} => ?limit=29
-   * @param {Object} headers Any headers user may wish to pass.
+   * executes GET HTTP requests on resource
+   * 
+   * @param {string | DataDiscoveryFilter} [filter] optional string/DataDiscovery filter object containing a filter for the resource
+   * @param {Object} [headers] object of key/value pairs containing headers for the HTTP request
    */
-  const _get = async (filterParameters, queryStrParameters, headers) => {
-    await slashDB
-      .dataDiscovery(
-        'get',
-        database,
-        filterParameters ? filterParameters : defaultFilterParameters,
-        queryStrParameters,
-        undefined,
-        headers
-      )
-      .then((data) => handleSetData(data))
-      .catch((error) => {
-        console.log(error);
-      });
+  const _get = async (filter, headers) => {
+    filter = filter ? filter : defaultFilter;
+    
+    if (headers) {
+      dbResource.setExtraHeaders(headers);
+    }
+
+    try {
+      const r = await dbResource.get(filter);
+      handleSetData(r.data);
+      dbResource.extraHeaders = {};
+    }
+    catch(e) {
+      dbResource.extraHeaders = {};
+      console.error(e);
+	  throw Error(e);
+    }
   };
 
   /**
-   *
-   * @param {array} defaultFilterParameters Array with names of resources to be accesed i.e. table name, column name, comlumn value
-   * e.g. [Album, AlbumId, 1, Artist]
-   * @param {Object} body Payload to be delivered.
-   * @param {Object} queryStrParameters Query params in key value pairs format to be send via url eg. {limit: 29} => ?limit=29
-   * @param {Object} headers Any headers user may wish to pass.
+   * executes POST HTTP requests on resource
+   * 
+   * @param {string | Object} body payload for POST request (usually a JavaScript object)
+   * @param {string | DataDiscoveryFilter} [filter] optional string/DataDiscovery filter object containing a filter for the resource
+   * @param {Object} [headers] object of key/value pairs containing headers for the HTTP request
    */
-  const _post = async (filterParameters, body, queryStrParameters, headers) => {
-    await slashDB
-      .dataDiscovery(
-        'post',
-        database,
-        filterParameters ? filterParameters : defaultFilterParameters,
-        queryStrParameters,
-        body,
-        headers
-      )
-      .then(handleUpdate);
+  const _post = async (body, filter, headers) => {
+    filter = filter ? filter : defaultFilter;
+
+    if (headers) {
+      dbResource.setExtraHeaders(headers);
+    }
+
+    try {
+      await dbResource.post(body, filter)
+        .then(handleUpdate);
+      dbResource.extraHeaders = {};
+    }
+    catch(e) {
+      dbResource.extraHeaders = {};
+      console.error(e);
+	  throw Error(e);
+    }
   };
 
   /**
-   *
-   * @param {array} defaultFilterParameters Array with names of resources to be accesed i.e. table name, column name, comlumn value
-   * e.g. [Album, AlbumId, 1, Artist]
-   * @param {Object} body Payload to be delivered.
-   * @param {Object} queryStrParameters Query params in key value pairs format to be send via url e.g. {limit: 29} => ?limit=29
-   * @param {Object} headers Any headers user may wish to pass.
+   * executes PUT HTTP requests on resource
+   * 
+   * @param {string | DataDiscoveryFilter} [filter] optional string/DataDiscovery filter object containing a filter for the resource
+   * @param {string | Object} body payload for POST request (usually a JavaScript object) 
+   * @param {Object} [headers] object of key/value pairs containing headers for the HTTP request
    */
-  const _put = async (filterParameters, body, queryStrParameters, headers) => {
-    await slashDB
-      .dataDiscovery(
-        'put',
-        database,
-        filterParameters ? filterParameters : defaultFilterParameters,
-        queryStrParameters,
-        body,
-        headers
-      )
-      .then(handleUpdate);
-  };
+    const _put = async (filter, body, headers) => {
+      filter = filter ? filter : defaultFilter;
+
+      if (headers) {
+        dbResource.setExtraHeaders(headers);
+      }
+
+      try {
+        await dbResource.put(filter, body)
+          .then(handleUpdate);
+        dbResource.extraHeaders = {};
+      }
+      catch(e) {
+        dbResource.extraHeaders = {};
+        console.error(e);
+		throw Error(e);
+      }
+    }
 
   /**
-   *
-   * @param {array} defaultFilterParameters Array with names of resources to be accesed i.e. table name, column name, comlumn value
-   * e.g. [Album, AlbumId, 1, Artist]
-   * @param {Object} queryStrParameters Query params in key value pairs format to be send via url e.g. {limit: 29} => ?limit=29
-   * @param {*} headers Any headers user may wish to pass.
+   * executes DELETE HTTP requests on resource
+   * 
+   * @param {string | DataDiscoveryFilter} [filter] optional string/DataDiscovery filter object containing a filter for the resource
+   * @param {Object} [headers] object of key/value pairs containing headers for the HTTP request
    */
-  const _delete = async (filterParameters, queryStrParameters, headers) => {
-    await slashDB
-      .dataDiscovery(
-        'delete',
-        database,
-        filterParameters ? filterParameters : defaultFilterParameters,
-        queryStrParameters,
-        undefined,
-        headers
-      )
-      .then(handleUpdate);
+  const _delete = async (filter, headers) => {
+    filter = filter ? filter : defaultFilter;
+
+    if (headers) {
+      dbResource.setExtraHeaders(headers);
+    }
+
+    try {
+      await dbResource.delete(filter)
+        .then(handleUpdate);
+      dbResource.extraHeaders = {};
+    }
+    catch(e) {
+      dbResource.extraHeaders = {};
+      console.error(e);
+	  throw Error(e);
+    }
   };
 
-  useEffect(() => {
+
+  useEffect( () => {
     isMountedRef.current = true;
     if (isMountedRef.current) {
-      _get(defaultFilterParameters, queryStrParameters);
+      
+      async function getData() {
+        const r = await dbResource.get(defaultFilter);
+        handleSetData(r.data);
+      };
+
+      try {
+        getData();
+      }
+      catch(e) {
+        console.error(e);
+		throw Error(e);
+      }
     }
     return () => (isMountedRef.current = false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -175,25 +267,27 @@ const useDataDiscovery = (
   return [data, _get, _post, _put, _delete];
 };
 
+
+
 /**
- * Function for executing query from slashDB server on a database
+ * Hook for accessing SlashDB SQL Pass-Thru feature
  *
- * @param {String} defHttpMethod GET, POST, PUT or DELETE - HTTP method to be used
- * @param {String} queryID ID/name of query as is in SlashDB server interface/config files
- * @param {Object} defParameters Params for query being executed e.g. if query requires itemID the pass object with key
- * value pair { itemID: `itemID_Value`,}.
- * @param {Object} defQueryStrParameters Query params in key value pairs format to be send via url eg. {limit: 29} => ?limit=29
- * @returns {array} [data, _executeQuery] data received as payload from response to query and function to be called for further
- * query execution
+ * @param {string} queryName name of the query to execute
+ * @param {string | SQLPassThruFilter} [defaultParams] optional string/SQLPassThruFilter filter object containing parameters for the query
+ * @param {string} defHttpMethod optional parameter to set the HTTP method used by the query; default is 'get'
+ * @param {string} [instanceName] optional name of SlashDB client that has been previously created with useSetUp() hook; default is 'default'
+ * @returns {array} array, first element is data for given resource/table and second element is function reference to execute query on demand
  */
+
 const useExecuteQuery = (
-  defHttpMethod,
-  queryID,
-  defParameters,
-  defQueryStrParameters
+  queryName,
+  defaultParams,
+  defHttpMethod = 'get',
+  instanceName = 'default'
 ) => {
   //redundant call - in case user did not call useSetUp at top level of project
-  useSetUp();
+  const sdbClient = sdbClientRegistry[instanceName];
+  const sqlQuery = new SQLPassThruQuery(queryName, sdbClient);
 
   const isMountedRef = useRef(null);
 
@@ -212,28 +306,43 @@ const useExecuteQuery = (
    * @param {Object} headers Any headers user may wish to pass.
    */
   const _executeQuery = async (
-    httpMethod,
-    parameters,
-    queryStrParameters,
-    headers
+    params,
+    body,
+    httpMethod = undefined,
+    headers = undefined
   ) => {
-    await slashDB
-      .executeQuery(
-        httpMethod ? httpMethod : defHttpMethod,
-        queryID,
-        parameters ? defParameters : parameters,
-        queryStrParameters ? defQueryStrParameters : queryStrParameters,
-        headers
-      )
-      .then((data) => {
-        handleDataSet(data);
-      });
+
+    params = params ? params : defaultParams;
+    httpMethod = httpMethod ? httpMethod : defHttpMethod;
+
+    if (headers) {
+      sqlQuery.setExtraHeaders(headers);
+    }
+
+    try {
+      const method = httpMethod.toLowerCase();
+      // post method has body as required arg in position 1, and parameter is optional
+      // so flip them around.  also, post method in SQL Pass Thru doesn't accept URL parameters and a body data
+      // so set the parameters arg to undefined
+      if (method === 'post') {
+        [params,body] = [body,params];
+        body = undefined;
+      }
+      const r = await sqlQuery[method](params, body);
+      handleDataSet(r.data);
+      sqlQuery.extraHeaders = {};
+    }
+    catch(e) {
+      sqlQuery.extraHeaders = {};
+      console.error(e);
+	  throw Error(e);
+    }
   };
 
   useEffect(() => {
     isMountedRef.current = true;
     if (isMountedRef.current) {
-      _executeQuery(defHttpMethod, defParameters);
+      _executeQuery(defaultParams);
     }
     return () => (isMountedRef.current = false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -241,6 +350,40 @@ const useExecuteQuery = (
 
   return [data, _executeQuery];
 };
+
+/** Helper to logout and remove SlashDB clients - used in Auth logout method
+ * 
+ * @param {string} [instanceName] the SlashDB client instance to log out; if undefined, all clients are logged out
+*/
+export function removeSdbClients(instanceName = undefined) {
+  if (instanceName) {
+    if (!sdbClientRegistry.hasOwnProperty(instanceName)) {
+      throw Error(`Client '${instanceName}' does not exist`);
+    }
+    sdbClientRegistry[instanceName].logout();
+    delete sdbClientRegistry[instanceName];
+  }
+  else {
+    Object.keys(sdbClientRegistry).forEach( instanceName => {
+      sdbClientRegistry[instanceName].logout();
+      delete sdbClientRegistry[instanceName];
+    });
+  }
+}
+
+/** Helper to check client authentication status - used in Auth clientIsAuthenticated method
+ * @param {string} instanceName the SlashDB client instance check
+ * @returns {boolean} flag indicating if client is currently authenticated to SlashDB server
+*/
+export async function checkClientAuthStatus(instanceName) {
+  if (!sdbClientRegistry.hasOwnProperty(instanceName)) {
+    console.warn(`Client '${instanceName}' does not exist`);
+    return false;
+  }
+  const status = await sdbClientRegistry[instanceName].isAuthenticated();
+  return status;
+}
+
 
 export { useSetUp as default, useDataDiscovery, useExecuteQuery };
 </code></pre>
@@ -253,13 +396,13 @@ export { useSetUp as default, useDataDiscovery, useExecuteQuery };
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#_delete">_delete</a></li><li><a href="global.html#authenticateCookieSessionLogin">authenticateCookieSessionLogin</a></li><li><a href="global.html#authenticateCookieSessionLogout">authenticateCookieSessionLogout</a></li><li><a href="global.html#dataDiscovery">dataDiscovery</a></li><li><a href="global.html#dataDiscoveryParamsConstructor">dataDiscoveryParamsConstructor</a></li><li><a href="global.html#delete_cookie">delete_cookie</a></li><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getIsAuthenticated">getIsAuthenticated</a></li><li><a href="global.html#handleResponse">handleResponse</a></li><li><a href="global.html#isAuthenticated">isAuthenticated</a></li><li><a href="global.html#post">post</a></li><li><a href="global.html#put">put</a></li><li><a href="global.html#queryParamsConstructor">queryParamsConstructor</a></li><li><a href="global.html#queryStrParamsConstructor">queryStrParamsConstructor</a></li><li><a href="global.html#raw">raw</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#setIsAuthenticated">setIsAuthenticated</a></li><li><a href="global.html#setUp">setUp</a></li><li><a href="global.html#slashDB">slashDB</a></li><li><a href="global.html#SlashDBConsumer">SlashDBConsumer</a></li><li><a href="global.html#SlashDBContext">SlashDBContext</a></li><li><a href="global.html#SlashDBProvider">SlashDBProvider</a></li><li><a href="global.html#useDataDiscovery">useDataDiscovery</a></li><li><a href="global.html#useExecuteQuery">useExecuteQuery</a></li><li><a href="global.html#useSetUp">useSetUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Auth.html">Auth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkClientAuthStatus">checkClientAuthStatus</a></li><li><a href="global.html#removeSdbClients">removeSdbClients</a></li><li><a href="global.html#SlashDBConsumer">SlashDBConsumer</a></li><li><a href="global.html#SlashDBContext">SlashDBContext</a></li><li><a href="global.html#SlashDBProvider">SlashDBProvider</a></li><li><a href="global.html#useDataDiscovery">useDataDiscovery</a></li><li><a href="global.html#useExecuteQuery">useExecuteQuery</a></li><li><a href="global.html#useSetUp">useSetUp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Sep 05 2021 19:13:19 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Oct 25 2022 07:28:25 GMT-0400 (Eastern Daylight Saving Time)
 </footer>
 
 <script> prettyPrint(); </script>

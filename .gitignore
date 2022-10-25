@@ -1,2 +1,5 @@
 
 demo_app/package-lock.json
+demo_app/node_modules
+node_modules
+package-lock.json
