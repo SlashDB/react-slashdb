@@ -6,7 +6,7 @@
 
 react-slashdb is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the React geared part of the package.  It makes use of the [SlashDB Javascript SDK](https://github.com/SlashDB/js-slashdb).
 
-Visit [SlashDB](https://www.slashdb.com/) and [SlashDB user guide](https://docs.slashdb.com/user-guide/) to learn more about SlashDB.
+Learn more about _SlashDB - REST API to Databases for Reading & Writing_ at www.slashdb.com and from it's [user guide](https://docs.slashdb.com/user-guide/).
 
 ## Documentation
 
