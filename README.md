@@ -36,7 +36,7 @@ Once the package is installed, you can use an import stament to tap into the fun
 
 ### Use in a React project
 
-Check a [Simple Demo Application](https://github.com/SlashDB/react-slashdb/tree/main/examples/demo_app) in the demo_app folder.
+See the [Simple Demo Application](https://github.com/SlashDB/react-slashdb/tree/main/examples/demo_app) in the demo_app folder.
 
 
 ## Classes/Hooks/Functions
