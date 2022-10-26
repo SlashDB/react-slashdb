@@ -10,10 +10,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { SlashDBContext } from './Context';
 
 // required JavaScript SDK classes
-import { SlashDBClient } from '@slashdb/js-slashdb/modules/slashdbclient.js';
-import { DataDiscoveryResource } from "@slashdb/js-slashdb/modules/datadiscovery.js";
-import { SQLPassThruQuery } from "@slashdb/js-slashdb/modules/sqlpassthru.js";
-
+import { SlashDBClient, DataDiscoveryResource, SQLPassThruQuery } from '@slashdb/js-slashdb';
 
 // list of SlashDB clients for use by hooks
 const sdbClientRegistry = {}
@@ -357,4 +354,4 @@ export async function checkClientAuthStatus(instanceName) {
 }
 
 
-export { useSetUp as default, useDataDiscovery, useExecuteQuery };
+export { useSetUp, useDataDiscovery, useExecuteQuery };
