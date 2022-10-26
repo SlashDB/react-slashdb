@@ -9,7 +9,7 @@ Showcases basic functionality of SlashDB React SDK features
 * Run `npm start`
 
 ### App.js Details
-Here is a simple functional component that uses the SlashDB React SDK to retrieve and update data and execute queries.  The full source code is [**here**](https://github.com/SlashDB/react-slashdb/blob/main/demo_app/src/App.js).  
+Here is a simple functional component that uses the SlashDB React SDK to retrieve and update data and execute queries.  The full source code is [**here**](https://github.com/SlashDB/react-slashdb/blob/main/examples/demo_app/src/App.js).  
 * First, set the configuration for SlashDB and use the `useSetup` hook to store this configuration.  Then, call the `useDataDiscovery`, and `useExecuteQuery` hooks to configure access to the resources that we need.  The `useDataDiscovery` and `useExecute` hooks return a data array and functions that we can call to interact with the data.  On any call to these functions, `useEffect` is invoked, so we don't need to worry about storing the state of the data that we are working with - the SDK will refresh the DOM for us when the functions are called and data is retrieved or modified.
 
 ```
