@@ -4,7 +4,8 @@
   "description": "SlashDB SDK for React apps",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	  "builddocs": "cd node_modules/.bin/ && jsdoc ../../src ../../README.md -d ../../docs"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@slashdb/js-slashdb": "git+ssh://github.com/SlashDB/js-slashdb.git"    
-  }
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.11"
+  }  
 }
