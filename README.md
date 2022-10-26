@@ -93,7 +93,7 @@ Auth is a class export of the SDK which allows for authentication with a usernam
     
     import { auth } from '@slashdb/react-slashdb';
     
-It provides two methods: ```login```, ```logout```   
+It provides three methods: `login`, `logout`, `clientIsAuthenticated`
 
 ##### auth.login(username, password, sdbClient, fnc) 
 This method takes 4 parameters: ```username```, ```password```, a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object (such as the one returned by ```useSetup```, and a function ```fnc``` that runs on successful authentication. When using an API key for authentication, you can set the password to null.  When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
@@ -122,25 +122,23 @@ Login.js:
 ProtectedRoute.js:
 
      ...
-     if (auth.authenticated)
+     if (auth.clientIsAuthenticated())
      ...
      
 Don’t forget to actually import the auth module from react-slashdb. For a full code example, please see the files ```App.js```, ```Login.js``` and ```ProtectedRoute.js``` in the [demo task list app](https://github.com/SlashDB/taskapp-demo). 
 
-##### auth.logout(fnc) 
-This method logs the user out of the active session, and then executes the provided function ```fnc```.  To use: 
+##### auth.logout(fnc, instanceName = undefined) 
+This method logs the user out of active SlashDB sessions, and then executes the provided function ```fnc```.  To use: 
 
      auth.logout(() => {
         //your code here;
      }
 
-This will send a logout request to the SlashDB server, then the provided function will run.  For a full example, look at the [demo task list app](https://github.com/SlashDB/taskapp-demo).
+This will send a logout request to the SlashDB server, then the provided function will run.  For a full example, look at the [demo task list app](https://github.com/SlashDB/taskapp-demo).  If no `instanceName` parameter is provided, all the existing SlashDB clients created with `useSetup` will be logged out.  If you wish to log out a specific instance, provide the same instance name used when creating the client with `useSetup`.
 
-This class contains the following properties:
 
-```authenticated``` - a boolean flag that is set to true when the ```login``` method is successful
-
-```sdbClient``` - a reference to the ```SlashDBClient``` provided to the ```login``` method, used when calling ```logout```
+#### auth.clientIsAuthenticated(instanceName = 'default')
+This method checks if a SlashDB client created with the `useSetup` hook is currently authenticated with the server.  Useful when checking if a session cookie is valid.  The `instanceName` parameter should match the one provided to the `useSetup` hook (or leave empty to use 'default').  It will return a boolean value.
 
 
 ### Hooks for Database Interaction and Data Retrieval
