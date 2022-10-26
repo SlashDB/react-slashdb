@@ -47,9 +47,9 @@
 <hr>
 <h2><a href="https://www.slashdb.com/">SlashDB</a>, <a href="https://www.slashdb.com/documentation/">SlashDB documentation</a>, <a href="https://github.com/SlashDB/taskapp-demo">demo task list app</a>, <a href="https://slashdb.github.io/react-slashdb/">react-slashdb documentation</a></h2>
 <p>react-slashdb is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the React geared part of the package.  It makes use of the <a href="https://github.com/SlashDB/js-slashdb">SlashDB Javascript SDK</a>.</p>
-<p>Visit <a href="https://www.slashdb.com/">SlashDB</a> and <a href="https://docs.slashdb.com/user-guide/">SlashDB user guide</a> to learn more about SlashDB.</p>
+<p>Learn more about <em>SlashDB - REST API to Databases for Reading &amp; Writing</em> at https://www.slashdb.com and in the <a href="https://docs.slashdb.com/user-guide/">user guide</a>.</p>
 <h2>Documentation</h2>
-<p>Check out the <a href="https://www.slashdb.com/documentation/">SlashDB documentation</a> to learn about all the methods and functions used in SlashDB that are exposed by this SDK.</p>
+<p>Check out the <a href="https://slashdb.github.io/react-slashdb/docs/">SDK documentation</a> to learn about all the methods and functions that are available.</p>
 <h2>Quick Start Guide</h2>
 <h3>Set up and install</h3>
 <p>To start using react-slashdb you need to have Node.js set up on your system. Please get the LTS version of Node.js here <a href="https://nodejs.org/en/">Node.js</a>.</p>
@@ -65,8 +65,7 @@
 </code></pre>
 <p><code>SlashDBProvider</code> is only one of the many functions, methods or components available from this SDK. More of them are described later in this document.</p>
 <h3>Use in a React project</h3>
-<h3>A Simple Application</h3>
-<p><a href="https://github.com/SlashDB/react-slashdb/tree/main/demo_app">A small demo application can be found in the demo_app folder</a>.</p>
+<p>Check a <a href="https://github.com/SlashDB/react-slashdb/tree/main/examples/demo_app">Simple Demo Application</a> in the demo_app folder.</p>
 <h2>Classes/Hooks/Functions</h2>
 <h3>SlashDBProvider and SlashDBContext</h3>
 <p>We can optionally provide the SlashDB configuration details to a React app using the <code>SlashDBProvider</code> component.  Under the hood, the React custom components and hooks used in an app use functions and classes defined in the <a href="https://github.com/SlashDB/js-slashdb">SlashDB Javascript SDK</a>.  See an example below of how to use <code>SlashDBProvider</code>:</p>
@@ -109,7 +108,7 @@ const sdbClient = useSetUp();
 <p>where <code>instanceName</code> is a unique identifier for the instance (e.g. 'client2') and the host/username/apiKey/password parameters contain the SlashDB configuration  for the instance. The name given will be used when calling the <code>useDataDiscovery</code> or <code>useExecuteQuery</code> to perform transactions with the secondary SlashDB instance.  As before, a <code>SlashDBClient</code> object will be returned that holds this configuration info.  Calling <code>useSetup</code> with a name that has been given previously will return the existing <code>SlashDBClient</code> object for that instance.</p>
 <h3>Auth</h3>
 <p>Auth is a class export of the SDK which allows for authentication with a username and password or API key.  The class is imported like so:</p>
-<pre><code>import { auth } from 'react-slashdb';
+<pre><code>import { auth } from '@slashdb/react-slashdb';
 </code></pre>
 <p>It provides two methods: <code>login</code>, <code>logout</code></p>
 <h5>auth.login(username, password, sdbClient, fnc)</h5>
@@ -155,7 +154,7 @@ The parameters specified for the <code>SlashDBProvider</code> and the parameters
 <p><code>useDataDiscovery</code> provides access to the Data Discovery features of SlashDB for interaction with the database.  It takes two required parameters and two optional parameters: the <code>database</code> name (as configured in SlashDB), and the database <code>resource</code> (e.g. a table name) to transact with.  Optionally, you can provide a <code>defaultFilter</code> to use with GET/POST/PUT/DELETE calls (the filter can be overridden if desired).  A filter can be a SlashDB-compatible string, or a <code>DataDiscoveryFilter</code> object.  For more information, see the <a href="https://docs.slashdb.com/user-guide/using-slashdb/data-discovery/">SlashDB Data Discovery documentation</a> and the <a href="https://github.com/SlashDB/js-slashdb">SlashDB JavaScript SDK</a>.</p>
 <p>The final optional parameter, <code>instanceName</code>, allows transactions with any additional SlashDB instances that have been registered with the app using the <code>useSetUp</code> hook.</p>
 <p>The hook returns back data from the requested resource when called, and four functions to perform GET/PUT/POST/DELETE requests.  Here's an example of usage:</p>
-<pre><code> import { useDataDiscovery } from 'react-slashdb';
+<pre><code> import { useDataDiscovery } from '@slashdb/react-slashdb';
  ...
 const [data, getData, postData, putData, deleteData] = useDataDiscovery(
   '_DatabaseName_',
@@ -220,7 +219,7 @@ getList();
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Oct 25 2022 15:09:19 GMT-0400 (Eastern Daylight Saving Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Wed Oct 26 2022 19:30:27 GMT-0400 (Eastern Daylight Saving Time)
 </footer>
 
 <script> prettyPrint(); </script>
