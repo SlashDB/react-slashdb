@@ -24,6 +24,7 @@
   "homepage": "https://github.com/SlashDB/react-slashdb#readme",
   "peerDependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@slashdb/js-slashdb": "git+ssh://github.com/SlashDB/js-slashdb.git"    
   }
 }
