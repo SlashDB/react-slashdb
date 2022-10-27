@@ -1,7 +1,7 @@
 {
   "name": "react-slashdb",
   "version": "2.0.0",
-  "description": "SlashDB SDK for React apps",
+  "description": "SlashDB SDK for React Apps",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,9 +15,10 @@
     "slashdb",
     "react",
     "javascript",
-    "sdk"
+    "sdk",
+    "rest api"
   ],
-  "author": "Aleksandar Kamenev",
+  "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/SlashDB/react-slashdb/issues"
