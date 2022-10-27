@@ -1,5 +1,5 @@
 {
-  "name": "react-slashdb",
+  "name": "@slashdb/react-slashdb",
   "version": "2.0.0",
   "description": "SlashDB SDK for React Apps",
   "main": "src/index.js",
