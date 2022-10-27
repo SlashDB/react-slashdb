@@ -1,12 +1,13 @@
 {
-  "name": "SlashDB-React-SDK-Demo",
+  "name": "slashdb-react-sdk-demo",
+  "description": "SlashDB React SDK Demo App",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-	  "@slashdb/react-slashdb": "git+ssh://github.com/SlashDB/react-slashdb.git"    
+	  "@slashdb/react-slashdb": "^2.0.0"    
   },
   "scripts": {
     "start": "react-scripts start",
