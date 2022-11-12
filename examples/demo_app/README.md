@@ -10,7 +10,7 @@ Showcases basic functionality of SlashDB React SDK features
 
 ### App.js Details
 Here is a simple functional component that uses the SlashDB React SDK to retrieve and update data and execute queries.  The full source code is [**here**](https://github.com/SlashDB/react-slashdb/blob/main/examples/demo_app/src/App.js).  
-* First, set the configuration for SlashDB and use the `useSetup` hook to store this configuration.  Then, call the `useDataDiscovery`, and `useExecuteQuery` hooks to configure access to the resources that we need.  The `useDataDiscovery` and `useExecute` hooks return a data array and functions that we can call to interact with the data.  On any call to these functions, `useEffect` is invoked, so we don't need to worry about storing the state of the data that we are working with - the SDK will refresh the DOM for us when the functions are called and data is retrieved or modified.
+* First, set the configuration for SlashDB and use the `useSetUp` hook to store this configuration.  Then, call the `useDataDiscovery`, and `useExecuteQuery` hooks to configure access to the resources that we need.  The `useDataDiscovery` and `useExecute` hooks return a data array and functions that we can call to interact with the data.  On any call to these functions, `useEffect` is invoked, so we don't need to worry about storing the state of the data that we are working with - the SDK will refresh the DOM for us when the functions are called and data is retrieved or modified.
 
 ```
 import { useState } from 'react';
@@ -22,24 +22,24 @@ const SDBDemo = () => {
 	const [values,updateField] = useState({'mintotal':20,'maxtotal':100});	// set defaults for SQL Pass-Thru query parameters
 	const [filter,updateFilter] = useState({});
 	
-	// useSetup parameters - SlashDB config
+	// useSetUp parameters - SlashDB config
 	const host = "https://demo.slashdb.com";	// set SlashDB host here
 	const username = null;	// set SlashDB username here
 	const apiKey = null;	// set SlashDB API key here
 	
-	// useSetup hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
+	// useSetUp hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
 	useSetUp('default', host, username, apiKey);
 	
 	// useDataDiscovery parameters
 	const database = "Chinook";
 	const resource = "Customer";
-	// useDataDiscovery hook - interact with a database resource in the SlashDB instance configured with useSetup hook
+	// useDataDiscovery hook - interact with a database resource in the SlashDB instance configured with useSetUp hook
 	const [resourceData, getResource, postResource, putResource, deleteResource] = useDataDiscovery(database, resource);
 
 	// useExecuteQuery parameters
 	const queryName = "invoices-total-range";
 	const defaultParams = 'mintotal/20/maxtotal/100';
-	// useExecuteQuery hook - interact with a query that is configured in the SlashDB instance configured with useSetup hook
+	// useExecuteQuery hook - interact with a query that is configured in the SlashDB instance configured with useSetUp hook
 	const [queryData, execQuery] = useExecuteQuery(queryName, defaultParams);
 ```
 
