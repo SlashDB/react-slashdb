@@ -81,11 +81,11 @@ This hook sets internal variables based on the values provided to ```SlashDBProv
     .
     const sdbClient = useSetUp();
 
-If you provide no parameters to ```useSetup```, it will check if it has been previously called; if not, it will create a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object that holds all the configuration info from the ```SlashDBProvider``` component.  This object is returned by ```useSetup```.  If it has been called, it will return the existing ```SlashDBClient``` object.  If your app requires connections to multiple SlashDB instances with different configurations, configure the first instance using the ```SlashDBProvider``` component and the ```useSetup``` hook with no parameters.  For any additional instances, call ```useSetup``` like so:
+If you provide no parameters to ```useSetUp```, it will check if it has been previously called; if not, it will create a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object that holds all the configuration info from the ```SlashDBProvider``` component.  This object is returned by ```useSetUp```.  If it has been called, it will return the existing ```SlashDBClient``` object.  If your app requires connections to multiple SlashDB instances with different configurations, configure the first instance using the ```SlashDBProvider``` component and the ```useSetUp``` hook with no parameters.  For any additional instances, call ```useSetUp``` like so:
     
     useSetUp(instanceName,host,username,apiKey,password)
 
-where ```instanceName``` is a unique identifier for the instance (e.g. 'client2') and the host/username/apiKey/password parameters contain the SlashDB configuration  for the instance. The name given will be used when calling the ```useDataDiscovery``` or ```useExecuteQuery``` to perform transactions with the secondary SlashDB instance.  As before, a ```SlashDBClient``` object will be returned that holds this configuration info.  Calling ```useSetup``` with a name that has been given previously will return the existing ```SlashDBClient``` object for that instance.
+where ```instanceName``` is a unique identifier for the instance (e.g. 'client2') and the host/username/apiKey/password parameters contain the SlashDB configuration  for the instance. The name given will be used when calling the ```useDataDiscovery``` or ```useExecuteQuery``` to perform transactions with the secondary SlashDB instance.  As before, a ```SlashDBClient``` object will be returned that holds this configuration info.  Calling ```useSetUp``` with a name that has been given previously will return the existing ```SlashDBClient``` object for that instance.
 
 ### Auth
 
@@ -96,7 +96,7 @@ Auth is a class export of the SDK which allows for authentication with a usernam
 It provides three methods: `login`, `logout`, `clientIsAuthenticated`
 
 ##### auth.login(username, password, sdbClient, fnc) 
-This method takes 4 parameters: ```username```, ```password```, a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object (such as the one returned by ```useSetup```, and a function ```fnc``` that runs on successful authentication. When using an API key for authentication, you can set the password to null.  When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
+This method takes 4 parameters: ```username```, ```password```, a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object (such as the one returned by ```useSetUp```, and a function ```fnc``` that runs on successful authentication. When using an API key for authentication, you can set the password to null.  When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
     
      const sdbClient = useSetUp();
      auth.login(username, password, sdbClient, () => {
@@ -134,11 +134,11 @@ This method logs the user out of active SlashDB sessions, and then executes the 
         //your code here;
      }
 
-This will send a logout request to the SlashDB server, then the provided function will run.  For a full example, look at the [demo task list app](https://github.com/SlashDB/taskapp-demo).  If no `instanceName` parameter is provided, all the existing SlashDB clients created with `useSetup` will be logged out.  If you wish to log out a specific instance, provide the same instance name used when creating the client with `useSetup`.
+This will send a logout request to the SlashDB server, then the provided function will run.  For a full example, look at the [demo task list app](https://github.com/SlashDB/taskapp-demo).  If no `instanceName` parameter is provided, all the existing SlashDB clients created with `useSetUp` will be logged out.  If you wish to log out a specific instance, provide the same instance name used when creating the client with `useSetUp`.
 
 
 #### auth.clientIsAuthenticated(instanceName = 'default')
-This method checks if a SlashDB client created with the `useSetup` hook is currently authenticated with the server.  Useful when checking if a session cookie is valid.  The `instanceName` parameter should match the one provided to the `useSetup` hook (or leave empty to use 'default').  It will return a boolean value.
+This method checks if a SlashDB client created with the `useSetUp` hook is currently authenticated with the server.  Useful when checking if a session cookie is valid.  The `instanceName` parameter should match the one provided to the `useSetUp` hook (or leave empty to use 'default').  It will return a boolean value.
 
 
 ### Hooks for Database Interaction and Data Retrieval
