@@ -23,7 +23,7 @@ const sdbClientRegistry = {}
  * @param {string} [apiKey] API key for the username
  * @returns {SlashDBClient} a reference to the SlashDB client that was created
   */
-const useSetUp = (instanceName = 'default', host = undefined, username = undefined, apiKey = undefined ) => {
+const useSetUp = (instanceName = 'default', config = undefined) => {
   
   // // if instance already exists and host parameter is provided, warn about overwrite
   // if (sdbClientRegistry.hasOwnProperty(instanceName) && host) {
@@ -33,33 +33,27 @@ const useSetUp = (instanceName = 'default', host = undefined, username = undefin
   // handling for the special default instanceName 
   if (instanceName === 'default') {
     // try and get SlashDBProvider config, if it exists
-    const { baseUrl, setUpOptions } = useContext(SlashDBContext);
+    const { setUpOptions } = useContext(SlashDBContext);
 
     // when the default hasn't been created yet
     if (!sdbClientRegistry.hasOwnProperty('default')) {
       // if SlashDBProvider configured, create default using its config
-      if (baseUrl) {
-        if (setUpOptions) {
-          sdbClientRegistry['default'] = new SlashDBClient(baseUrl, setUpOptions.username, setUpOptions.apiKey);
-        }
-        else {
-          sdbClientRegistry['default'] = new SlashDBClient(baseUrl);
-        }
+      if (setUpOptions) {
+        sdbClientRegistry['default'] = new SlashDBClient(setUpOptions);
       }
-      // otherwise, create default using provided params
       else {
-        sdbClientRegistry['default'] = new SlashDBClient(host, username, apiKey);
-      }       
+        sdbClientRegistry['default'] = new SlashDBClient(config);
+      }     
     }      
 
     else {
-      if (host) {
+      if (config) {
         // if SlashDBProvider component configured and and attempting to overwrite default, don't allow
-        if (baseUrl) {
+        if (setUpOptions) {
           console.warn(`SlashDB client 'default' was previously configured with SlashDBProvider - cannot overwrite`); 
         }
         else {
-          sdbClientRegistry['default'] = new SlashDBClient(host, username, apiKey);
+          sdbClientRegistry['default'] = new SlashDBClient(config);
         }
       }
     }
@@ -67,8 +61,8 @@ const useSetUp = (instanceName = 'default', host = undefined, username = undefin
   }
 
   // when host parameter provided, overwrite client object
-  else if (host) {
-    sdbClientRegistry[instanceName] = new SlashDBClient(host, username, apiKey);
+  else if (config) {
+    sdbClientRegistry[instanceName] = new SlashDBClient(config);
   }
   
   return sdbClientRegistry[instanceName];

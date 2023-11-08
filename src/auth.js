@@ -16,9 +16,11 @@ class Auth {
    * @param {SlashDBClient} sdbClient a SlashDBClient object containing SlashDB host config, obtained from calling the useSetUp hook
    * @param {function} fnc function to be executed after successful login
    */
-  async login(username, password, sdbClient, fnc) {
+  // async login(username, password, sdbClient, fnc) {
+    async login(sdbClient, fnc) {
     try {
-      await sdbClient.login(username, password)
+      // await sdbClient.login(username, password)
+      await sdbClient.login()
         .then( () => {
           if (sdbClient.isAuthenticated()) {
             fnc();
