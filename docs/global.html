@@ -142,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line36">line 36</a>
+        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
@@ -540,7 +540,7 @@
     
 
     
-    <h4 class="name" id="SlashDBProvider"><span class="type-signature"></span>SlashDBProvider<span class="signature">(param0)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="SlashDBProvider"><span class="type-signature"></span>SlashDBProvider<span class="signature">(setUpOptions)</span><span class="type-signature"></span></h4>
     
 
     
@@ -584,7 +584,7 @@
 
         <tr>
             
-                <td class="name"><code>param0</code></td>
+                <td class="name"><code>setUpOptions</code></td>
             
 
             <td class="type">
@@ -600,7 +600,7 @@
 
             
 
-            <td class="description last">holds two parameters: baseUrl (hostname/IP of SlashdDB instance to be accessed, e.g. https://demo.slashdb.com)and setUpOptions. setUpOptions is an object of key value pairs. 'apiKey' is the only key that can be set currentlyof development.
+            <td class="description last">holds the setup parameter: setUpOptions is an object of key value pairs.
                 <h6>Properties</h6>
                 
 
@@ -626,7 +626,7 @@
 
         <tr>
             
-                <td class="name"><code>baseUrl</code></td>
+                <td class="name"><code>host</code></td>
             
 
             <td class="type">
@@ -642,14 +642,83 @@
 
             
 
-            <td class="description last">URL of SlashDB instance</td>
+            <td class="description last">hostname/IP address of the SlashDB instance, including protocol and port number (e.g. http://192.168.1.1:8080)</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>setUpOptions</code></td>
+                <td class="name"><code>username</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">optional username to use when connecting to SlashDB instance using password based login</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">optional password associated with username</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>apiKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">optional API key associated with username</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config.sso</code></td>
             
 
             <td class="type">
@@ -665,7 +734,102 @@
 
             
 
-            <td class="description last">parameters for connection { apiKey: "somevalue" }</td>
+            <td class="description last">optional settings to login with Single Sign-On
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idpId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">optional identity provider id configured in SlashDB</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>redirectUri</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">optional redirect uri to redirect browser after sign in</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>popUp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">optional flag to sign in against the identity provider with a Pop Up window (false by default)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -713,7 +877,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line20">line 20</a>
+        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -1635,7 +1799,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Wed Nov 08 2023 21:25:22 GMT-0400 (Venezuela Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Fri Nov 10 2023 11:15:53 GMT-0400 (Venezuela Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -11,11 +11,15 @@ const SlashDBContext = createContext({});
  * See SlashDBConsumer for more info on how to use params passed. I.e. Wrap App component so that context data is avaliable
  * throughout application.
  *
- * @param {Object} param0 holds two parameters: baseUrl (hostname/IP of SlashdDB instance to be accessed, e.g. https://demo.slashdb.com)
- * and setUpOptions. setUpOptions is an object of key value pairs. 'apiKey' is the only key that can be set currently
- * of development.
- * @param {string} param0.baseUrl URL of SlashDB instance
- * @param {Object} param0.setUpOptions parameters for connection { apiKey: "somevalue" }
+ * @param {Object} setUpOptions holds the setup parameter: setUpOptions is an object of key value pairs.
+ * @param {string} setUpOptions.host - hostname/IP address of the SlashDB instance, including protocol and port number (e.g. http://192.168.1.1:8080)
+ * @param {string} setUpOptions.username - optional username to use when connecting to SlashDB instance using password based login
+ * @param {string} setUpOptions.password - optional password associated with username
+ * @param {string} setUpOptions.apiKey - optional API key associated with username
+ * @param {Object} setUpOptions.config.sso - optional settings to login with Single Sign-On
+ * @param {string} setUpOptions.config.sso.idpId - optional identity provider id configured in SlashDB
+ * @param {string} setUpOptions.config.sso.redirectUri - optional redirect uri to redirect browser after sign in
+ * @param {boolean} setUpOptions.config.sso.popUp - optional flag to sign in against the identity provider with a Pop Up window (false by default)
  */
 const SlashDBProvider = ({ setUpOptions = null, children }) =>
   React.createElement(
