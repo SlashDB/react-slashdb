@@ -18,9 +18,13 @@ const sdbClientRegistry = {}
  * Create a SlashDB client object for use with hooks and store in a local registry.  If no parameters are provided, create a client object using
  * the parameters configured with the SlashDBProvider component
  * @param {string} [instanceName] a name to identify the client in the registry; if not provided, will be named 'default'
- * @param {string} [host] hostname of the SlashDB instance to connect to, with protocol/port
- * @param {string} [username] username for SlashDB client to authenticate with
- * @param {string} [apiKey] API key for the username
+ * @param {Object} [config] holds the setup parameter: config is an object of key value pairs.
+ * @param {string} [config.host] hostname of the SlashDB instance to connect to, with protocol/port
+ * @param {string} [config.apiKey] API key for the username
+ * @param {Object} [config.sso] optional settings to login with Single Sign-On
+ * @param {Object} [config.sso.idpId] optional identity provider id configured in SlashDB
+ * @param {Object} [config.sso.redirectUri] optional redirect uri to redirect browser after sign in
+ * @param {Object} [config.sso.popUp] optional flag to sign in against the identity provider with a Pop Up window (false by default)
  * @returns {SlashDBClient} a reference to the SlashDB client that was created
   */
 const useSetUp = (instanceName = 'default', config = undefined) => {

@@ -11,8 +11,6 @@ class Auth {
   /**
    * Log into a SlashDB instance with a username and password.  Executes provided function on successful login
    *
-   * @param {string} username user to log into SlashDB instance with
-   * @param {string} password password for user
    * @param {SlashDBClient} sdbClient a SlashDBClient object containing SlashDB host config, obtained from calling the useSetUp hook
    * @param {function} fnc function to be executed after successful login
    */
