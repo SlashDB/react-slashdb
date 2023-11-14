@@ -65,9 +65,24 @@ class Auth {
     try {
       await sdbClient.updateSSO(sso)
         .then( () => {
-          if (sdbClient.isAuthenticated()) {
-            fnc();
-          }
+          fnc();
+        });
+    }
+    catch(e) {
+      console.error(e);
+      return;
+    }
+  }
+
+  /**
+   * Refreshes the SSO access token.
+   *
+   */
+  async refreshSSO(sdbClient, fnc) {
+    try {
+      await sdbClient.refreshSSOtoken()
+        .then( () => {
+          fnc();
         });
     }
     catch(e) {
