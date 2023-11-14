@@ -56,12 +56,10 @@ import { SlashDBProvider } from '@slashdb/react-slashdb';
 .
 .
 <SlashDBProvider
-    baseUrl={'https://demo.slashdb.com/'}
-    setUpOptions={{
-    username: slashDBUserName,
-    password: slashDBUserPassword,
-    //apiKey: slashDBUserAPIKey
-}}
+    setUpOptions={
+        host: 'https://demo.slashdb.com/',
+        // apiKey: slashDBUserAPIKey
+    }
 >
     <App />
 </SlashDBProvider>
@@ -96,7 +94,16 @@ const sdbClient = useSetUp();
 If you provide no parameters to ```useSetUp```, it will check if it has been previously called; if not, it will create a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object that holds all the configuration info from the ```SlashDBProvider``` component.  This object is returned by ```useSetUp```.  If it has been called, it will return the existing ```SlashDBClient``` object.  If your app requires connections to multiple SlashDB instances with different configurations, configure the first instance using the ```SlashDBProvider``` component and the ```useSetUp``` hook with no parameters.  For any additional instances, call ```useSetUp``` like so:
 
 ```jsx
-useSetUp(instanceName,host,username,apiKey,password)
+const config = {
+    host: 'https://demo.slashdb.com/',
+    // apiKey: slashDBUserAPIKey,
+    // sso: {
+    //     idpId: idProviderId,
+    //     redirectUri: redirectUri,
+    //     popUp: true
+    // }
+}
+useSetUp(instanceName, config)
 ```
 
 where ```instanceName``` is a unique identifier for the instance (e.g. 'client2') and the host/username/apiKey/password parameters contain the SlashDB configuration  for the instance. The name given will be used when calling the ```useDataDiscovery``` or ```useExecuteQuery``` to perform transactions with the secondary SlashDB instance.  As before, a ```SlashDBClient``` object will be returned that holds this configuration info.  Calling ```useSetUp``` with a name that has been given previously will return the existing ```SlashDBClient``` object for that instance.
