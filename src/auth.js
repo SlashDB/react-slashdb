@@ -40,9 +40,9 @@ class Auth {
    */
   async loginSSO(popUp, sdbClient, fnc) {
     try {
-      await sdbClient.loginSSO(popUp)
-        .then( (resp) => {
-          sdbClient.ssoCredentials = resp;
+      sdbClient.updateSSO({popUp: popUp});
+      await sdbClient.login()
+        .then( () => {
           if (sdbClient.isAuthenticated()) {
             fnc();
           }
