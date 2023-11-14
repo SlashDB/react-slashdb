@@ -142,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line40">line 40</a>
+        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -333,7 +333,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line341">line 341</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line345">line 345</a>
     </li></ul></dd>
     
 
@@ -504,7 +504,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line321">line 321</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line325">line 325</a>
     </li></ul></dd>
     
 
@@ -649,52 +649,6 @@
 
         <tr>
             
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">optional username to use when connecting to SlashDB instance using password based login</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">optional password associated with username</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>apiKey</code></td>
             
 
@@ -718,7 +672,7 @@
 
         <tr>
             
-                <td class="name"><code>config.sso</code></td>
+                <td class="name"><code>sso</code></td>
             
 
             <td class="type">
@@ -877,7 +831,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line24">line 24</a>
+        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -1144,7 +1098,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line81">line 81</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -1435,7 +1389,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line245">line 245</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line249">line 249</a>
     </li></ul></dd>
     
 
@@ -1493,7 +1447,7 @@
     
 
     
-    <h4 class="name" id="useSetUp"><span class="type-signature"></span>useSetUp<span class="signature">(instanceName<span class="signature-attributes">opt</span>, host<span class="signature-attributes">opt</span>, username<span class="signature-attributes">opt</span>, apiKey<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {SlashDBClient}</span></h4>
+    <h4 class="name" id="useSetUp"><span class="type-signature"></span>useSetUp<span class="signature">(instanceName<span class="signature-attributes">opt</span>, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {SlashDBClient}</span></h4>
     
 
     
@@ -1580,6 +1534,64 @@
 
         <tr>
             
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">holds the setup parameter: config is an object of key value pairs.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
                 <td class="name"><code>host</code></td>
             
 
@@ -1605,49 +1617,8 @@
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
             <td class="description last">hostname of the SlashDB instance to connect to, with protocol/port</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">username for SlashDB client to authenticate with</td>
         </tr>
 
     
@@ -1679,12 +1650,175 @@
             
 
             
-                <td class="default">
+
+            <td class="description last">API key for the username</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sso</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
                 
                 </td>
             
 
-            <td class="description last">API key for the username</td>
+            
+
+            <td class="description last">optional settings to login with Single Sign-On
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idpId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">optional identity provider id configured in SlashDB</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>redirectUri</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">optional redirect uri to redirect browser after sign in</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>popUp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">optional flag to sign in against the identity provider with a Pop Up window (false by default)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1725,7 +1859,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line26">line 26</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -1799,7 +1933,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Fri Nov 10 2023 11:15:53 GMT-0400 (Venezuela Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Mon Nov 13 2023 20:33:03 GMT-0400 (Venezuela Time)
 </footer>
 
 <script> prettyPrint(); </script>
