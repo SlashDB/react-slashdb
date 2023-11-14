@@ -123,7 +123,7 @@ auth.login(username, password, sdbClient, () => {
 
 One way to use this would be to replace ```// code to run if authentication is successful``` with something like ```props.history.push('/app')``` and also have a protected route at ```/app```. In your ```ProtectedRoute.js``` component (for example), you can use the ```auth.authenticated``` property to check if the user account has logged in successfully.  See below for an example (this code also uses [react-router-dom](https://www.npmjs.com/package/react-router-dom) for routing needs).
 
-App.js:
+**App.js**:
 
 ```jsx
 ...
@@ -131,17 +131,17 @@ App.js:
 ...
 ```
 
-Login.js:
+**Login.js**:
 
 ```jsx
 let sdbClient = useSetUp();
-    ...
-    auth.login('_username_', '_password_', sdbClient, () => {
+...
+auth.login('_username_', '_password_', sdbClient, () => {
     props.history.push('/app');
 });
 ```
 
-ProtectedRoute.js:
+**ProtectedRoute.js**:
 
 ```jsx
 ...

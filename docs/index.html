@@ -55,10 +55,10 @@
 <p>To start using react-slashdb you need to have Node.js set up on your system. Please get the LTS version of Node.js here <a href="https://nodejs.org/en/">Node.js</a>.</p>
 <p>This package has a peer dependency of react and react-dom so these packages will be installed on your system as well if required. Please see <a href="https://www.npmjs.com/package/react-dom">react-dom</a> and <a href="https://www.npmjs.com/package/react">react</a>. The SDK also requires the <a href="https://github.com/SlashDB/js-slashdb">SlashDB JavaScript SDK</a>, which is also included as a dependency.</p>
 <p>To get started, either install the package globally using the following npm command in a terminal:</p>
-<pre class="prettyprint source lang-console"><code>npm install -g @slashdb/react-slashdb
+<pre class="prettyprint source"><code>npm install -g @slashdb/react-slashdb
 </code></pre>
 <p>or navigate in your file system to an existing project in which you wish to use the package and run the following command in a terminal:</p>
-<pre class="prettyprint source lang-console"><code>npm install @slashdb/react-slashdb
+<pre class="prettyprint source"><code>npm install @slashdb/react-slashdb
 </code></pre>
 <p>Once the package is installed, you can use an import stament to tap into the functionality of react-slashdb, e.g. :</p>
 <pre class="prettyprint source lang-jsx"><code>import { SlashDBProvider } from '@slashdb/react-slashdb';
@@ -119,19 +119,19 @@ auth.login(username, password, sdbClient, () => {
 });
 </code></pre>
 <p>One way to use this would be to replace <code>// code to run if authentication is successful</code> with something like <code>props.history.push('/app')</code> and also have a protected route at <code>/app</code>. In your <code>ProtectedRoute.js</code> component (for example), you can use the <code>auth.authenticated</code> property to check if the user account has logged in successfully.  See below for an example (this code also uses <a href="https://www.npmjs.com/package/react-router-dom">react-router-dom</a> for routing needs).</p>
-<p>App.js:</p>
+<p><strong>App.js</strong>:</p>
 <pre class="prettyprint source lang-jsx"><code>...
 &lt;ProtectedRoute exact path=&quot;/app&quot; component={_YourComponent_} />
 ...
 </code></pre>
-<p>Login.js:</p>
+<p><strong>Login.js</strong>:</p>
 <pre class="prettyprint source lang-jsx"><code>let sdbClient = useSetUp();
-    ...
-    auth.login('_username_', '_password_', sdbClient, () => {
+...
+auth.login('_username_', '_password_', sdbClient, () => {
     props.history.push('/app');
 });
 </code></pre>
-<p>ProtectedRoute.js:</p>
+<p><strong>ProtectedRoute.js</strong>:</p>
 <pre class="prettyprint source lang-jsx"><code>...
 if (auth.clientIsAuthenticated())
 ...
