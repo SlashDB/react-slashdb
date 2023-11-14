@@ -22,15 +22,21 @@ This package has a peer dependency of react and react-dom so these packages will
 
 To get started, either install the package globally using the following npm command in a terminal:
 
-    npm install -g @slashdb/react-slashdb
+```
+npm install -g @slashdb/react-slashdb
+```
 
 or navigate in your file system to an existing project in which you wish to use the package and run the following command in a terminal:
 
-    npm install @slashdb/react-slashdb
+```
+npm install @slashdb/react-slashdb
+```
 
 Once the package is installed, you can use an import stament to tap into the functionality of react-slashdb, e.g. :
 
-    import { SlashDBProvider } from '@slashdb/react-slashdb';
+```jsx
+import { SlashDBProvider } from '@slashdb/react-slashdb';
+```
 
 ```SlashDBProvider``` is only one of the many functions, methods or components available from this SDK. More of them are described later in this document.
 
@@ -88,17 +94,21 @@ const sdbClient = useSetUp();
 ```
 
 If you provide no parameters to ```useSetUp```, it will check if it has been previously called; if not, it will create a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object that holds all the configuration info from the ```SlashDBProvider``` component.  This object is returned by ```useSetUp```.  If it has been called, it will return the existing ```SlashDBClient``` object.  If your app requires connections to multiple SlashDB instances with different configurations, configure the first instance using the ```SlashDBProvider``` component and the ```useSetUp``` hook with no parameters.  For any additional instances, call ```useSetUp``` like so:
-    
-    useSetUp(instanceName,host,username,apiKey,password)
+
+```jsx
+useSetUp(instanceName,host,username,apiKey,password)
+```
 
 where ```instanceName``` is a unique identifier for the instance (e.g. 'client2') and the host/username/apiKey/password parameters contain the SlashDB configuration  for the instance. The name given will be used when calling the ```useDataDiscovery``` or ```useExecuteQuery``` to perform transactions with the secondary SlashDB instance.  As before, a ```SlashDBClient``` object will be returned that holds this configuration info.  Calling ```useSetUp``` with a name that has been given previously will return the existing ```SlashDBClient``` object for that instance.
 
 ### Auth
 
 Auth is a class export of the SDK which allows for authentication with a username and password or API key.  The class is imported like so:
-    
-    import { auth } from '@slashdb/react-slashdb';
-    
+
+```jsx
+import { auth } from '@slashdb/react-slashdb';
+```
+
 It provides three methods: `login`, `logout`, `clientIsAuthenticated`
 
 ##### auth.login(username, password, sdbClient, fnc) 

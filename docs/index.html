@@ -55,13 +55,13 @@
 <p>To start using react-slashdb you need to have Node.js set up on your system. Please get the LTS version of Node.js here <a href="https://nodejs.org/en/">Node.js</a>.</p>
 <p>This package has a peer dependency of react and react-dom so these packages will be installed on your system as well if required. Please see <a href="https://www.npmjs.com/package/react-dom">react-dom</a> and <a href="https://www.npmjs.com/package/react">react</a>. The SDK also requires the <a href="https://github.com/SlashDB/js-slashdb">SlashDB JavaScript SDK</a>, which is also included as a dependency.</p>
 <p>To get started, either install the package globally using the following npm command in a terminal:</p>
-<pre><code>npm install -g @slashdb/react-slashdb
+<pre class="prettyprint source lang-console"><code>npm install -g @slashdb/react-slashdb
 </code></pre>
 <p>or navigate in your file system to an existing project in which you wish to use the package and run the following command in a terminal:</p>
-<pre><code>npm install @slashdb/react-slashdb
+<pre class="prettyprint source lang-console"><code>npm install @slashdb/react-slashdb
 </code></pre>
 <p>Once the package is installed, you can use an import stament to tap into the functionality of react-slashdb, e.g. :</p>
-<pre><code>import { SlashDBProvider } from '@slashdb/react-slashdb';
+<pre class="prettyprint source lang-jsx"><code>import { SlashDBProvider } from '@slashdb/react-slashdb';
 </code></pre>
 <p><code>SlashDBProvider</code> is only one of the many functions, methods or components available from this SDK. More of them are described later in this document.</p>
 <h3>Use in a React project</h3>
@@ -103,12 +103,12 @@ const { baseUrl, setUpOptions } = useContext(SlashDBContext);
 const sdbClient = useSetUp();
 </code></pre>
 <p>If you provide no parameters to <code>useSetUp</code>, it will check if it has been previously called; if not, it will create a <a href="https://github.com/SlashDB/js-slashdb"><code>SlashDBClient</code></a> object that holds all the configuration info from the <code>SlashDBProvider</code> component.  This object is returned by <code>useSetUp</code>.  If it has been called, it will return the existing <code>SlashDBClient</code> object.  If your app requires connections to multiple SlashDB instances with different configurations, configure the first instance using the <code>SlashDBProvider</code> component and the <code>useSetUp</code> hook with no parameters.  For any additional instances, call <code>useSetUp</code> like so:</p>
-<pre><code>useSetUp(instanceName,host,username,apiKey,password)
+<pre class="prettyprint source lang-jsx"><code>useSetUp(instanceName,host,username,apiKey,password)
 </code></pre>
 <p>where <code>instanceName</code> is a unique identifier for the instance (e.g. 'client2') and the host/username/apiKey/password parameters contain the SlashDB configuration  for the instance. The name given will be used when calling the <code>useDataDiscovery</code> or <code>useExecuteQuery</code> to perform transactions with the secondary SlashDB instance.  As before, a <code>SlashDBClient</code> object will be returned that holds this configuration info.  Calling <code>useSetUp</code> with a name that has been given previously will return the existing <code>SlashDBClient</code> object for that instance.</p>
 <h3>Auth</h3>
 <p>Auth is a class export of the SDK which allows for authentication with a username and password or API key.  The class is imported like so:</p>
-<pre><code>import { auth } from '@slashdb/react-slashdb';
+<pre class="prettyprint source lang-jsx"><code>import { auth } from '@slashdb/react-slashdb';
 </code></pre>
 <p>It provides three methods: <code>login</code>, <code>logout</code>, <code>clientIsAuthenticated</code></p>
 <h5>auth.login(username, password, sdbClient, fnc)</h5>
@@ -147,7 +147,7 @@ if (auth.clientIsAuthenticated())
 <h4>auth.clientIsAuthenticated(instanceName = 'default')</h4>
 <p>This method checks if a SlashDB client created with the <code>useSetUp</code> hook is currently authenticated with the server.  Useful when checking if a session cookie is valid.  The <code>instanceName</code> parameter should match the one provided to the <code>useSetUp</code> hook (or leave empty to use 'default').  It will return a boolean value.</p>
 <h3>Hooks for Database Interaction and Data Retrieval</h3>
-<p>The SDK exposes two custom hooks which make retrieving data and interacting with a database on a SlashDB server via GET, POST, PUT and DELETE calls simple.
+<p>The SDK exposes two custom hooks which make retrieving data and interacting with a database on a SlashDB server via GET, POST, PUT and DELETE calls simple.<br>
 The parameters specified for the <code>SlashDBProvider</code> and the parameters provided to <code>useDataDiscovery</code> are combined to construct the URL to which the request will be made. For a detailed example, please see the <a href="https://github.com/SlashDB/taskapp-demo">demo task list app</a></p>
 <h3>useDataDiscovery(database, resource, defaultFilter = '', instanceName = 'default')</h3>
 <p><code>useDataDiscovery</code> provides access to the Data Discovery features of SlashDB for interaction with the database.  It takes two required parameters and two optional parameters: the <code>database</code> name (as configured in SlashDB), and the database <code>resource</code> (e.g. a table name) to transact with.  Optionally, you can provide a <code>defaultFilter</code> to use with GET/POST/PUT/DELETE calls (the filter can be overridden if desired).  A filter can be a SlashDB-compatible string, or a <code>DataDiscoveryFilter</code> object.  For more information, see the <a href="https://docs.slashdb.com/user-guide/using-slashdb/data-discovery/">SlashDB Data Discovery documentation</a> and the <a href="https://github.com/SlashDB/js-slashdb">SlashDB JavaScript SDK</a>.</p>
@@ -219,7 +219,7 @@ const [data, getData, postData, putData, deleteData] = useDataDiscovery(
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Mon Nov 13 2023 20:33:03 GMT-0400 (Venezuela Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a>
 </footer>
 
 <script> prettyPrint(); </script>
