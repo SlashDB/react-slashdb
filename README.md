@@ -4,7 +4,7 @@
 [SlashDB](https://www.slashdb.com/), [SlashDB documentation](https://www.slashdb.com/documentation/), [demo task list app](https://github.com/SlashDB/taskapp-demo), [react-slashdb documentation](https://slashdb.github.io/react-slashdb/)
 ---
 
-react-slashdb is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the React geared part of the package.  It makes use of the [SlashDB Javascript SDK](https://github.com/SlashDB/js-slashdb).
+`react-slashdb` is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the React geared part of the package. It makes use of the [SlashDB Javascript SDK](https://github.com/SlashDB/js-slashdb).
 
 Learn more about _SlashDB - REST API to Databases for Reading & Writing_ at https://www.slashdb.com and in the [user guide](https://docs.slashdb.com/user-guide/).
 
@@ -12,7 +12,7 @@ Learn more about _SlashDB - REST API to Databases for Reading & Writing_ at http
 
 Check out the [SDK documentation](https://slashdb.github.io/react-slashdb/docs/) to learn about all the methods and functions that are available.
 
-## Quick Start Guide 
+## Quick Start Guide
 
 ### Set up and install
 
@@ -65,7 +65,7 @@ import { SlashDBProvider } from '@slashdb/react-slashdb';
 </SlashDBProvider>
 ```
 
-```baseUrl``` is the hostname or IP address of the SlashDB server to use with your app, including the protocol (http/https) and port number if necessary.  If the database doesn't require any authentication, set a dummy value for the username and API key.  You can use a username/password in cases where the React app and the SlashDB server are hosted on the same domain name/IP; otherwise, you'll need an API key.  If you set both a username/password and an API key, the API key will take precedence.  With username/password logins, you'll need to call the ```auth.login()``` method to get a valid session cookie from the SlashDB server.  See [auth](https://github.com/SlashDB/react-slashdb/README.md#auth) for more details.
+```baseUrl``` is the hostname or IP address of the SlashDB server to use with your app, including the protocol (http/https) and port number if necessary.  If the database doesn't require any authentication, `host` parameter is enough setting. You can use a username/password in cases where the React app and the SlashDB server are hosted on the same domain name/IP; otherwise, you'll need an API key.  You can also set the parameters for Single Sign-On based login. If you set both a username/password and an API key, the API key will take precedence. With username/password logins, you'll need to call the ```auth.login()``` method to get a valid session cookie from the SlashDB server.  See [auth](https://github.com/SlashDB/react-slashdb/README.md#auth) for more details.
 
 It is recommended to wrap the root component of your React app (in the code above, ```<App/>```) inside the ```SlashDBProvider``` so that the connection parameters are available for use down the component tree; they can be accessed in other components using the following code:
 
@@ -110,13 +110,13 @@ where ```instanceName``` is a unique identifier for the instance (e.g. 'client2'
 
 ### Auth
 
-Auth is a class export of the SDK which allows for authentication with a username and password or API key.  The class is imported like so:
+Auth is a class export of the SDK which allows for authentication with a username and password, API key or Single Sign-On credentials. The class is imported like so:
 
 ```jsx
 import { auth } from '@slashdb/react-slashdb';
 ```
 
-It provides three methods: `login`, `logout`, `clientIsAuthenticated`
+It provides six methods: `login`, `loginSSO`, `updateSSO`, `refreshSSO`, `logout`, `clientIsAuthenticated`
 
 ##### auth.login(username, password, sdbClient, fnc) 
 This method takes 4 parameters: ```username```, ```password```, a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object (such as the one returned by ```useSetUp```, and a function ```fnc``` that runs on successful authentication. When using an API key for authentication, you can set the password to null.  When using a username and password for authentication, the username and password must match a valid user entry in the SlashDB config files. The username must always match a valid user entry, regardless of whether you are using API key or not.
@@ -128,7 +128,17 @@ auth.login(username, password, sdbClient, () => {
 });
 ```
 
-One way to use this would be to replace ```// code to run if authentication is successful``` with something like ```props.history.push('/app')``` and also have a protected route at ```/app```. In your ```ProtectedRoute.js``` component (for example), you can use the ```auth.authenticated``` property to check if the user account has logged in successfully.  See below for an example (this code also uses [react-router-dom](https://www.npmjs.com/package/react-router-dom) for routing needs).
+##### auth.loginSSO(popUp, sdbClient, fnc) 
+This method takes 3 parameters: ```popUp```, a [```SlashDBClient```](https://github.com/SlashDB/js-slashdb) object (such as the one returned by ```useSetUp```, and a function ```fnc``` that runs on successful authentication.
+
+```jsx
+const sdbClient = useSetUp();
+auth.loginSSO(true, sdbClient, () => {
+    // code to run if authentication is successful
+});
+```
+
+One way to use any of these would be to replace ```// code to run if authentication is successful``` with something like ```props.history.push('/app')``` and also have a protected route at ```/app```. In your ```ProtectedRoute.js``` component (for example), you can use the ```auth.authenticated``` property to check if the user account has logged in successfully.  See below for an example (this code also uses [react-router-dom](https://www.npmjs.com/package/react-router-dom) for routing needs).
 
 **App.js**:
 
