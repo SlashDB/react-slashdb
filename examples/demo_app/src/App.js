@@ -30,7 +30,8 @@ const SDBDemo = () => {
 		apiKey: apiKey
 	}
 	// useSetUp hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
-	useSetUp('default', config);
+	// useSetUp('default', config);
+	useSetUp();
 	
 	// useDataDiscovery parameters
 	const database = "Chinook";
