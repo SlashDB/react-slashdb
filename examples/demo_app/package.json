@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@slashdb/js-slashdb": "file:../../../js-slashdb",
-    "@slashdb/react-slashdb": "../../",
+    "@slashdb/js-slashdb": "github:SlashDB/js-slashdb#js-pkce-integration",
+    "@slashdb/react-slashdb": "github:SlashDB/react-slashdb#nelsonc-development",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1"
