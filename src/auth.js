@@ -18,12 +18,14 @@ class Auth {
    */
   async login(username, password, sdbClient, fnc) {
     try {
-      await sdbClient.login(username, password)
-        .then( () => {
-          if (sdbClient.isAuthenticated()) {
-            fnc();
-          }
-        });
+      sdbClient.updateSSO({popUp: popUp});
+      let success = await sdbClient.login(username, password);
+
+      if (success){
+        fnc();
+      } else {
+        console.warn("Login failed");
+      }
     }
     catch(e) {
       console.error(e);
@@ -41,12 +43,13 @@ class Auth {
   async loginSSO(popUp, sdbClient, fnc) {
     try {
       sdbClient.updateSSO({popUp: popUp});
-      await sdbClient.login()
-        .then( () => {
-          if (sdbClient.isAuthenticated()) {
-            fnc();
-          }
-        });
+      let success = await sdbClient.login();
+
+      if (success){
+        fnc();
+      } else {
+        console.warn("Login failed");
+      }
     }
     catch(e) {
       console.error(e);
