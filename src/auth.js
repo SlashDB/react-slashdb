@@ -18,7 +18,6 @@ class Auth {
    */
   async login(username, password, sdbClient, fnc) {
     try {
-      sdbClient.updateSSO({popUp: popUp});
       let success = await sdbClient.login(username, password);
 
       if (success){
