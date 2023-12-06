@@ -1,12 +1,17 @@
 # react-slashdb
 
----
-[SlashDB](https://www.slashdb.com/), [SlashDB documentation](https://www.slashdb.com/documentation/), [demo task list app](https://github.com/SlashDB/taskapp-demo), [react-slashdb documentation](https://slashdb.github.io/react-slashdb/)
----
-
-`react-slashdb` is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the React geared part of the package. It makes use of the [SlashDB Javascript SDK](https://github.com/SlashDB/js-slashdb).
+`react-slashdb` is an SDK for use in React projects. It provides easy integration with SlashDB as a middleware solution for interaction with relational databases. The exposed methods allow for connecting to a database by providing minimal configuration information, and also provide built-in capability for state management of incoming data when using the React geared part of the package.  It makes use of the [SlashDB Javascript SDK](https://github.com/SlashDB/js-slashdb).
 
 Learn more about _SlashDB - REST API to Databases for Reading & Writing_ at https://www.slashdb.com and in the [user guide](https://docs.slashdb.com/user-guide/).
+
+To see an actual web application making use of this SDK and SlashDB in a backend please check out the [taskapp-demo](https://github.com/SlashDB/taskapp-demo) project.
+
+## See also
+
+* [SlashDB website](https://www.slashdb.com/)
+* [SlashDB documentation](https://www.slashdb.com/documentation/)
+* [js-slashdb](https://github.com/SlashDB/js-slashdb) - core SDK to SlashDB for JavaScript
+* [taskapp-demo](https://github.com/SlashDB/taskapp-demo) - a demo web application
 
 ## Documentation
 
