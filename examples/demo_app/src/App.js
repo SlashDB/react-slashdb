@@ -20,9 +20,9 @@ const SDBDemo = () => {
 	}
 	
 	// useSetUp parameters - SlashDB config
-	const host = "http://host.docker.internal:8000";	// set SlashDB host here
-	const username = "test";	// set SlashDB username here
-	const apiKey = "03zhx63tfaaj35zgesbikqg5uiqdla70";	// set SlashDB API key here
+	const host = "https://demo.slashdb.com";	// set SlashDB host here
+	const username = null;	// set SlashDB username here
+	const apiKey = null;	// set SlashDB API key here
 	
 	const config = {
 		host: host,
@@ -31,7 +31,7 @@ const SDBDemo = () => {
 	}
 	// useSetUp hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
 	// useSetUp('default', config);
-	useSetUp();
+	useSetUp('default', config);
 	
 	// useDataDiscovery parameters
 	const database = "Chinook";

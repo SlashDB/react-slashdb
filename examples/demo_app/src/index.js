@@ -12,15 +12,7 @@ const apiKey = "03zhx63tfaaj35zgesbikqg5uiqdla70";	// set SlashDB API key here
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <SlashDBProvider
-      setUpOptions={{
-        host: host,
-        username: username,
-        apiKey: apiKey        
-      }}
-    >
     <App />
-    </SlashDBProvider>
   </React.StrictMode>
 );
 
