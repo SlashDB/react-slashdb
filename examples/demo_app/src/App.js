@@ -20,13 +20,9 @@ const SDBDemo = () => {
 	}
 	
 	// useSetUp parameters - SlashDB config
-	const host = "https://demo.slashdb.com";	// set SlashDB host here
-	const apiKey = " ";	// set SlashDB API key here
-	
 	const config = {
-		host: host,
-		username: username,
-		apiKey: apiKey
+		host: "https://demo.slashdb.com", // set SlashDB host here
+		apiKey: "API KEY" 				  // set SlashDB API key here
 	}
 	// useSetUp hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
 	// useSetUp('default', config);
