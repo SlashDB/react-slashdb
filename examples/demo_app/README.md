@@ -5,7 +5,7 @@ Showcases basic functionality of SlashDB React SDK features
 ### Installation
 * Copy this folder and subfolders to a new folder and open in a shell
 * Run `npm install` - _will install React and SlashDB SDK packages_
-* _Optional_ - edit the file `src/App.js` and update the `host`, `username`, `apiKey` parameters for your SlashDB configuration
+* _Optional_ - edit the file `src/App.js` and update the `host` and `apiKey` parameters in the `config` variable for your SlashDB configuration
 * Run `npm start`
 
 ### App.js Details
@@ -23,12 +23,9 @@ const SDBDemo = () => {
 	const [filter,updateFilter] = useState({});
 	
 	// useSetUp parameters - SlashDB config
-	const host = "https://demo.slashdb.com";	// set SlashDB host here
-	const username = null;	// set SlashDB username here
-	const apiKey = null;	// set SlashDB API key here
 	const config = {
-		host: host,
-		apiKey: apiKey
+		host: "https://demo.slashdb.com", // set SlashDB host here
+		apiKey: "API KEY" 				  // set SlashDB API key here
 	};
 	// useSetUp hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
 	useSetUp('default', host, username, apiKey);
