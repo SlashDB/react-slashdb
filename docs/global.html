@@ -104,7 +104,12 @@
 
 
 <div class="description">
-    Use to access params passed though use of SlashDBProvider.useContext hook from React can be used instead of SlashDBConsumer in practicesuch as:import { useContext} from 'react';import { SlashDBContext } from './Context';useContext(SlashDBContext);
+    <p>Use to access params passed though use of SlashDBProvider.</p>
+<p>useContext hook from React can be used instead of SlashDBConsumer in practice<br>
+such as:<br>
+import { useContext} from 'react';<br>
+import { SlashDBContext } from './Context';<br>
+useContext(SlashDBContext);</p>
 </div>
 
 
@@ -142,7 +147,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line36">line 36</a>
+        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -166,7 +171,8 @@
 
 
 <div class="description">
-    Create custom Context to be used with provider, consumer and useContext hook. For param sharing without need to pass itdown from parent to child at each level of the component tree.
+    <p>Create custom Context to be used with provider, consumer and useContext hook. For param sharing without need to pass it<br>
+down from parent to child at each level of the component tree.</p>
 </div>
 
 
@@ -240,7 +246,7 @@
 
 
 <div class="description">
-    Helper to check client authentication status - used in Auth clientIsAuthenticated method
+    <p>Helper to check client authentication status - used in Auth clientIsAuthenticated method</p>
 </div>
 
 
@@ -292,7 +298,7 @@
 
             
 
-            <td class="description last">the SlashDB client instance check</td>
+            <td class="description last"><p>the SlashDB client instance check</p></td>
         </tr>
 
     
@@ -333,7 +339,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line347">line 347</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line345">line 345</a>
     </li></ul></dd>
     
 
@@ -362,7 +368,7 @@
 
         
 <div class="param-desc">
-    flag indicating if client is currently authenticated to SlashDB server
+    <p>flag indicating if client is currently authenticated to SlashDB server</p>
 </div>
 
 
@@ -399,7 +405,7 @@
 
 
 <div class="description">
-    Helper to logout and remove SlashDB clients - used in Auth logout method
+    <p>Helper to logout and remove SlashDB clients - used in Auth logout method</p>
 </div>
 
 
@@ -463,7 +469,7 @@
 
             
 
-            <td class="description last">the SlashDB client instance to log out; if undefined, all clients are logged out</td>
+            <td class="description last"><p>the SlashDB client instance to log out; if undefined, all clients are logged out</p></td>
         </tr>
 
     
@@ -504,7 +510,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line327">line 327</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line325">line 325</a>
     </li></ul></dd>
     
 
@@ -540,7 +546,7 @@
     
 
     
-    <h4 class="name" id="SlashDBProvider"><span class="type-signature"></span>SlashDBProvider<span class="signature">(param0)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="SlashDBProvider"><span class="type-signature"></span>SlashDBProvider<span class="signature">(setUpOptions)</span><span class="type-signature"></span></h4>
     
 
     
@@ -548,7 +554,10 @@
 
 
 <div class="description">
-    Custom React component for build in use of Provider from createContext. Use: <SlashDBProvider params... >....children </SlashDBProvider>by defining SlashDBProvider element in project we can pass params to it which will be accessable thoughout project.See SlashDBConsumer for more info on how to use params passed. I.e. Wrap App component so that context data is avaliablethroughout application.
+    <p>Custom React component for build in use of Provider from createContext. Use: <SlashDBProvider params... >....children </SlashDBProvider><br>
+by defining SlashDBProvider element in project we can pass params to it which will be accessable thoughout project.<br>
+See SlashDBConsumer for more info on how to use params passed. I.e. Wrap App component so that context data is avaliable<br>
+throughout application.</p>
 </div>
 
 
@@ -584,7 +593,7 @@
 
         <tr>
             
-                <td class="name"><code>param0</code></td>
+                <td class="name"><code>setUpOptions</code></td>
             
 
             <td class="type">
@@ -600,7 +609,7 @@
 
             
 
-            <td class="description last">holds two parameters: baseUrl (hostname/IP of SlashdDB instance to be accessed, e.g. https://demo.slashdb.com)and setUpOptions. setUpOptions is an object of key value pairs. 'apiKey' is the only key that can be set currentlyof development.
+            <td class="description last"><p>holds the setup parameter: setUpOptions is an object of key value pairs.</p>
                 <h6>Properties</h6>
                 
 
@@ -626,7 +635,7 @@
 
         <tr>
             
-                <td class="name"><code>baseUrl</code></td>
+                <td class="name"><code>host</code></td>
             
 
             <td class="type">
@@ -642,14 +651,37 @@
 
             
 
-            <td class="description last">URL of SlashDB instance</td>
+            <td class="description last"><p>hostname/IP address of the SlashDB instance, including protocol and port number (e.g. http://192.168.1.1:8080)</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>setUpOptions</code></td>
+                <td class="name"><code>apiKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>optional API key associated with username</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sso</code></td>
             
 
             <td class="type">
@@ -665,7 +697,102 @@
 
             
 
-            <td class="description last">parameters for connection { apiKey: "somevalue" }</td>
+            <td class="description last"><p>optional settings to login with Single Sign-On</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idpId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>optional identity provider id configured in SlashDB</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>redirectUri</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>optional redirect uri to redirect browser after sign in</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>popUp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>optional flag to sign in against the identity provider with a Pop Up window (false by default)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -713,7 +840,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line20">line 20</a>
+        <a href="Context.js.html">Context.js</a>, <a href="Context.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -757,7 +884,7 @@
 
 
 <div class="description">
-    Hook for accessing SlashDB Data Discovery feature
+    <p>Hook for accessing SlashDB Data Discovery feature</p>
 </div>
 
 
@@ -825,7 +952,7 @@
                 </td>
             
 
-            <td class="description last">name of the database containing the desired resource/table</td>
+            <td class="description last"><p>name of the database containing the desired resource/table</p></td>
         </tr>
 
     
@@ -860,7 +987,7 @@
                 </td>
             
 
-            <td class="description last">the resource/table to discover</td>
+            <td class="description last"><p>the resource/table to discover</p></td>
         </tr>
 
     
@@ -900,7 +1027,7 @@
                 </td>
             
 
-            <td class="description last">optional string/DataDiscovery filter object containing a default filter for the resource</td>
+            <td class="description last"><p>optional string/DataDiscovery filter object containing a default filter for the resource</p></td>
         </tr>
 
     
@@ -939,7 +1066,7 @@
                 </td>
             
 
-            <td class="description last">optional name of SlashDB client that has been previously created with useSetUp() hook; default is 'default'</td>
+            <td class="description last"><p>optional name of SlashDB client that has been previously created with useSetUp() hook; default is 'default'</p></td>
         </tr>
 
     
@@ -980,7 +1107,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line87">line 87</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -1009,7 +1136,7 @@
 
         
 <div class="param-desc">
-    array, first element is data for given resource/table and subsequent elements are function references to execute on-demand GET/POST/PUT/DELETE calls on the resource
+    <p>array, first element is data for given resource/table and subsequent elements are function references to execute on-demand GET/POST/PUT/DELETE calls on the resource</p>
 </div>
 
 
@@ -1046,7 +1173,7 @@
 
 
 <div class="description">
-    Hook for accessing SlashDB SQL Pass-Thru feature
+    <p>Hook for accessing SlashDB SQL Pass-Thru feature</p>
 </div>
 
 
@@ -1114,7 +1241,7 @@
                 </td>
             
 
-            <td class="description last">name of the query to execute</td>
+            <td class="description last"><p>name of the query to execute</p></td>
         </tr>
 
     
@@ -1154,7 +1281,7 @@
                 </td>
             
 
-            <td class="description last">optional string/SQLPassThruFilter filter object containing parameters for the query</td>
+            <td class="description last"><p>optional string/SQLPassThruFilter filter object containing parameters for the query</p></td>
         </tr>
 
     
@@ -1191,7 +1318,7 @@
                 </td>
             
 
-            <td class="description last">optional parameter to set the HTTP method used by the query; default is 'get'</td>
+            <td class="description last"><p>optional parameter to set the HTTP method used by the query; default is 'get'</p></td>
         </tr>
 
     
@@ -1230,7 +1357,7 @@
                 </td>
             
 
-            <td class="description last">optional name of SlashDB client that has been previously created with useSetUp() hook; default is 'default'</td>
+            <td class="description last"><p>optional name of SlashDB client that has been previously created with useSetUp() hook; default is 'default'</p></td>
         </tr>
 
     
@@ -1271,7 +1398,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line251">line 251</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line249">line 249</a>
     </li></ul></dd>
     
 
@@ -1300,7 +1427,7 @@
 
         
 <div class="param-desc">
-    array, first element is data for given resource/table and second element is function reference to execute query on demand
+    <p>array, first element is data for given resource/table and second element is function reference to execute query on demand</p>
 </div>
 
 
@@ -1329,7 +1456,7 @@
     
 
     
-    <h4 class="name" id="useSetUp"><span class="type-signature"></span>useSetUp<span class="signature">(instanceName<span class="signature-attributes">opt</span>, host<span class="signature-attributes">opt</span>, username<span class="signature-attributes">opt</span>, apiKey<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {SlashDBClient}</span></h4>
+    <h4 class="name" id="useSetUp"><span class="type-signature"></span>useSetUp<span class="signature">(instanceName<span class="signature-attributes">opt</span>, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {SlashDBClient}</span></h4>
     
 
     
@@ -1337,7 +1464,8 @@
 
 
 <div class="description">
-    Create a SlashDB client object for use with hooks and store in a local registry.  If no parameters are provided, create a client object usingthe parameters configured with the SlashDBProvider component
+    <p>Create a SlashDB client object for use with hooks and store in a local registry.  If no parameters are provided, create a client object using<br>
+the parameters configured with the SlashDBProvider component</p>
 </div>
 
 
@@ -1409,9 +1537,67 @@
                 </td>
             
 
-            <td class="description last">a name to identify the client in the registry; if not provided, will be named 'default'</td>
+            <td class="description last"><p>a name to identify the client in the registry; if not provided, will be named 'default'</p></td>
         </tr>
 
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>holds the setup parameter: config is an object of key value pairs.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
     
 
         <tr>
@@ -1441,49 +1627,8 @@
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
-            <td class="description last">hostname of the SlashDB instance to connect to, with protocol/port</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last">username for SlashDB client to authenticate with</td>
+            <td class="description last"><p>hostname of the SlashDB instance to connect to, with protocol/port</p></td>
         </tr>
 
     
@@ -1515,12 +1660,175 @@
             
 
             
-                <td class="default">
+
+            <td class="description last"><p>API key for the username</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sso</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
                 
                 </td>
             
 
-            <td class="description last">API key for the username</td>
+            
+
+            <td class="description last"><p>optional settings to login with Single Sign-On</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idpId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional identity provider id configured in SlashDB</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>redirectUri</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional redirect uri to redirect browser after sign in</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>popUp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional flag to sign in against the identity provider with a Pop Up window (false by default)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1561,7 +1869,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line26">line 26</a>
+        <a href="hooks.js.html">hooks.js</a>, <a href="hooks.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -1590,7 +1898,7 @@
 
         
 <div class="param-desc">
-    a reference to the SlashDB client that was created
+    <p>a reference to the SlashDB client that was created</p>
 </div>
 
 
@@ -1635,7 +1943,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Wed Oct 26 2022 19:44:11 GMT-0400 (Eastern Daylight Saving Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a>
 </footer>
 
 <script> prettyPrint(); </script>

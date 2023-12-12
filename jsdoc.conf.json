@@ -1,0 +1,11 @@
+{
+    "templates": {
+        "default": {
+            "includeDate": false
+        }
+    },
+    "plugins": ["plugins/markdown"],
+    "markdown": {
+        "hardwrap": "true"
+    }
+}

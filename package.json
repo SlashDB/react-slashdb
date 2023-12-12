@@ -1,11 +1,11 @@
 {
   "name": "@slashdb/react-slashdb",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "SlashDB SDK for React Apps",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	  "builddocs": "cd node_modules/.bin/ && jsdoc ../../src ../../README.md -d ../../docs"
+	  "builddocs": "cd node_modules/.bin/ && jsdoc -c ../../jsdoc.conf.json ../../src ../../README.md -d ../../docs"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@slashdb/js-slashdb": "^1.0.0"    
+    "@slashdb/js-slashdb": "^2.0.1"
   },
   "devDependencies": {
     "jsdoc": "^3.6.11"

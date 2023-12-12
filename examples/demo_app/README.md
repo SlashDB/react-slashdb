@@ -5,14 +5,14 @@ Showcases basic functionality of SlashDB React SDK features
 ### Installation
 * Copy this folder and subfolders to a new folder and open in a shell
 * Run `npm install` - _will install React and SlashDB SDK packages_
-* _Optional_ - edit the file `src/App.js` and update the `host`, `username`, `apiKey` parameters for your SlashDB configuration
+* _Optional_ - edit the file `src/App.js` and update the `host` and `apiKey` parameters in the `config` variable for your SlashDB configuration
 * Run `npm start`
 
 ### App.js Details
 Here is a simple functional component that uses the SlashDB React SDK to retrieve and update data and execute queries.  The full source code is [**here**](https://github.com/SlashDB/react-slashdb/blob/main/examples/demo_app/src/App.js).  
 * First, set the configuration for SlashDB and use the `useSetUp` hook to store this configuration.  Then, call the `useDataDiscovery`, and `useExecuteQuery` hooks to configure access to the resources that we need.  The `useDataDiscovery` and `useExecute` hooks return a data array and functions that we can call to interact with the data.  On any call to these functions, `useEffect` is invoked, so we don't need to worry about storing the state of the data that we are working with - the SDK will refresh the DOM for us when the functions are called and data is retrieved or modified.
 
-```
+```js
 import { useState } from 'react';
 import { useSetUp, useDataDiscovery, useExecuteQuery } from '@slashdb/react-slashdb';
 
@@ -23,10 +23,10 @@ const SDBDemo = () => {
 	const [filter,updateFilter] = useState({});
 	
 	// useSetUp parameters - SlashDB config
-	const host = "https://demo.slashdb.com";	// set SlashDB host here
-	const username = null;	// set SlashDB username here
-	const apiKey = null;	// set SlashDB API key here
-	
+	const config = {
+		host: "https://demo.slashdb.com", // set SlashDB host here
+		apiKey: "API KEY" 				  // set SlashDB API key here
+	};
 	// useSetUp hook - useDataDiscovery/useExecuteQuery cannot run until this hook has been executed
 	useSetUp('default', host, username, apiKey);
 	
@@ -44,7 +44,8 @@ const SDBDemo = () => {
 ```
 
 * Then we create a few functions that will be triggered in the UI to peform operations:
-```
+
+```js
 	// DataDiscovery sample PUT usage with filter - updates customer fields
 	const updateRecord = async (e) => {
 		if (values[e.target.value]) {
@@ -101,8 +102,10 @@ const SDBDemo = () => {
 		execQuery(filterDef);
 	}	
 ```
+
 * Here, we display the data that we are accessing with `useDataDiscovery` and `useExecuteQuery`:
-``` 
+
+```js
 	//  data retrieval from useDataDiscovery hook
 	let resourceTable = resourceData.map( record => {
 		return (
