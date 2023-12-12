@@ -21,7 +21,6 @@ const SDBDemo = () => {
 	
 	// useSetUp parameters - SlashDB config
 	const host = "https://demo.slashdb.com";	// set SlashDB host here
-	const username = " ";	// set SlashDB username here
 	const apiKey = " ";	// set SlashDB API key here
 	
 	const config = {
