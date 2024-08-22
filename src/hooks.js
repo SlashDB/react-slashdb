@@ -80,7 +80,7 @@ const useSetUp = (instanceName = 'default', config = undefined) => {
 const useFetcher = (instanceName = 'default') => {
   const sdbClient = sdbClientRegistry[instanceName];
 
-  function updateOptions(sdbClient, options) {
+  function updateOptions(sdbClient, options = {}) {
     const update = { ...options };
   
     const headers = sdbClient.sdbConfig.getHeaders();
@@ -92,7 +92,7 @@ const useFetcher = (instanceName = 'default') => {
     return update;
   }
 
-  function fetcher(url, options){
+  function fetcher(url, options = {}){
     return fetch(url, updateOptions(sdbClient, options));
   }
 
