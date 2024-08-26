@@ -72,6 +72,32 @@ const useSetUp = (instanceName = 'default', config = undefined) => {
   return sdbClientRegistry[instanceName];
 };
 
+/**
+ * Create a fetch function with SlashDB credentials, after a successful login.
+ * @param {string} [instanceName] a name to identify the client in the registry; if not provided, will be named 'default'
+ * @returns {fetch} a reference to the fetch client with updated credential headers.
+  */
+const useFetcher = (instanceName = 'default') => {
+  const sdbClient = sdbClientRegistry[instanceName];
+
+  function updateOptions(sdbClient, options = {}) {
+    const update = { ...options };
+  
+    const headers = sdbClient.sdbConfig.getHeaders();
+    update.headers = {
+      ...update.headers,
+      ... headers
+    };
+  
+    return update;
+  }
+
+  function fetcher(url, options = {}){
+    return fetch(url, updateOptions(sdbClient, options));
+  }
+
+  return fetcher;
+};
 
 /**
  * Hook for accessing SlashDB Data Discovery feature
@@ -352,4 +378,4 @@ export async function checkClientAuthStatus(instanceName) {
 }
 
 
-export { useSetUp, useDataDiscovery, useExecuteQuery };
+export { useSetUp, useDataDiscovery, useExecuteQuery, useFetcher };
