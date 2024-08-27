@@ -92,7 +92,8 @@ const useFetcher = (instanceName = 'default') => {
     return update;
   }
 
-  function fetcher(url, options = {}){
+  function fetcher(path, options = {}){
+    const url = sdbClient.sdbConfig._buildEndpointString(path);
     return fetch(url, updateOptions(sdbClient, options));
   }
 

@@ -278,3 +278,14 @@ const [queryData, execQuery] = useExecuteQuery(
 **Return value ```queryData```** – an array containing the data retrieved from the query.  The data can be used like any JS array. 
 
 **Return value ```execQuery```** - ```execQuery(params, body, httpMethod = undefined, headers = undefined)``` - a function to execute the query passed to ```useExecuteQuery```.  Takes a ```params``` object containing key/value pairs of parameters.  Also accepts a ```body``` parameter, for queries that are configured to use POST/PUT methods.  Note that when executing a query with the POST method, the ```params``` object will be ignored.  Setting ```httpMethod``` will override the ```defHttpMethod``` given to ```useExecuteQuery``` when calling this function - this value should be one of GET/POST/PUT/DELETE.  Finally, a ```headers``` object of key/value pairs representing HTTP request headers can be passed along with the request.
+
+### useFetcher(instanceName = 'default')
+
+```useFetcher``` enables the creation of requests to custom paths in cases that custom endpoint and query parameters are required. This fet
+
+```jsx
+const fetcher = useFetcher();
+const data = await fetcher("/db/database/table.json?limit=10&transpose");
+```
+
+**Return value ```fetcher```** – a wrapper of fetch that includes SlashDB credentials after a successfull login. If no login was performed, `public` user will be used by default.
