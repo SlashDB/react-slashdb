@@ -4,6 +4,7 @@ import {
   useSetUp,
   useDataDiscovery,
   useExecuteQuery,
+  useFetcher
 } from './hooks';
 
 import {
@@ -19,5 +20,6 @@ export {
   SlashDBConsumer,
   useSetUp,
   useDataDiscovery,
-  useExecuteQuery
+  useExecuteQuery,
+  useFetcher
 };
