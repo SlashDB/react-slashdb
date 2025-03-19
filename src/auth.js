@@ -78,6 +78,23 @@ class Auth {
   }
 
   /**
+   * Acknowledge SSO login after redirect to obtain access token.
+   *
+   */
+  async acknowledgeSSO(sdbClient, fnc) {
+    try {
+      await sdbClient.acknowledgeSSO()
+        .then( () => {
+          fnc();
+        });
+    }
+    catch(e) {
+      console.error(e);
+      return;
+    }
+  }
+
+  /**
    * Refreshes the SSO access token.
    *
    */

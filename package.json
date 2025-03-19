@@ -1,6 +1,6 @@
 {
   "name": "@slashdb/react-slashdb",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "SlashDB SDK for React Apps",
   "main": "src/index.js",
   "scripts": {
@@ -27,7 +27,7 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@slashdb/js-slashdb": "^2.0.1"
+    "@slashdb/js-slashdb": "^2.0.2"
   },
   "devDependencies": {
     "jsdoc": "^3.6.11"
