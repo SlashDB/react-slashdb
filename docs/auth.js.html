@@ -46,12 +46,13 @@ class Auth {
    */
   async login(username, password, sdbClient, fnc) {
     try {
-      await sdbClient.login(username, password)
-        .then( () => {
-          if (sdbClient.isAuthenticated()) {
-            fnc();
-          }
-        });
+      let success = await sdbClient.login(username, password);
+
+      if (success){
+        fnc();
+      } else {
+        console.warn("Login failed");
+      }
     }
     catch(e) {
       console.error(e);
@@ -69,12 +70,13 @@ class Auth {
   async loginSSO(popUp, sdbClient, fnc) {
     try {
       sdbClient.updateSSO({popUp: popUp});
-      await sdbClient.login()
-        .then( () => {
-          if (sdbClient.isAuthenticated()) {
-            fnc();
-          }
-        });
+      let success = await sdbClient.login();
+
+      if (success){
+        fnc();
+      } else {
+        console.warn("Login failed");
+      }
     }
     catch(e) {
       console.error(e);
@@ -93,6 +95,23 @@ class Auth {
   async updateSSO(sso, sdbClient, fnc) {
     try {
       await sdbClient.updateSSO(sso)
+        .then( () => {
+          fnc();
+        });
+    }
+    catch(e) {
+      console.error(e);
+      return;
+    }
+  }
+
+  /**
+   * Acknowledge SSO login after redirect to obtain access token.
+   *
+   */
+  async acknowledgeSSO(sdbClient, fnc) {
+    try {
+      await sdbClient.acknowledgeSSO()
         .then( () => {
           fnc();
         });
@@ -154,7 +173,7 @@ export default new Auth();
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Auth.html">Auth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkClientAuthStatus">checkClientAuthStatus</a></li><li><a href="global.html#removeSdbClients">removeSdbClients</a></li><li><a href="global.html#SlashDBConsumer">SlashDBConsumer</a></li><li><a href="global.html#SlashDBContext">SlashDBContext</a></li><li><a href="global.html#SlashDBProvider">SlashDBProvider</a></li><li><a href="global.html#useDataDiscovery">useDataDiscovery</a></li><li><a href="global.html#useExecuteQuery">useExecuteQuery</a></li><li><a href="global.html#useSetUp">useSetUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Auth.html">Auth</a></li></ul><h3>Global</h3><ul><li><a href="global.html#checkClientAuthStatus">checkClientAuthStatus</a></li><li><a href="global.html#removeSdbClients">removeSdbClients</a></li><li><a href="global.html#SlashDBConsumer">SlashDBConsumer</a></li><li><a href="global.html#SlashDBContext">SlashDBContext</a></li><li><a href="global.html#SlashDBProvider">SlashDBProvider</a></li><li><a href="global.html#useDataDiscovery">useDataDiscovery</a></li><li><a href="global.html#useExecuteQuery">useExecuteQuery</a></li><li><a href="global.html#useFetcher">useFetcher</a></li><li><a href="global.html#useSetUp">useSetUp</a></li></ul>
 </nav>
 
 <br class="clear">
