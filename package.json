@@ -27,7 +27,7 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@slashdb/js-slashdb": "^2.0.2"
+    "@slashdb/js-slashdb": "^2.0.4"
   },
   "devDependencies": {
     "jsdoc": "^3.6.11"
