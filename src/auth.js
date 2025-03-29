@@ -82,16 +82,10 @@ class Auth {
    *
    */
   async acknowledgeSSO(sdbClient, fnc) {
-    try {
-      await sdbClient.acknowledgeSSO()
-        .then( () => {
-          fnc();
-        });
-    }
-    catch(e) {
-      console.error(e);
-      return;
-    }
+    await sdbClient.acknowledgeSSO()
+      .then( () => {
+        fnc();
+      });
   }
 
   /**
